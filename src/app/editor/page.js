@@ -5,7 +5,7 @@ import Toolbar from '@/components/Toolbar'
 import CodeEditor from '@/components/CodeEditor'
 import GameCanvas from '@/components/GameCanvas'
 import Console from '@/components/Console'
-import SplitPane from '@/components/SplitPane'
+import DockLayout from '@/components/DockLayout'
 
 export default function EditorPage() {
   const [code, setCode] = useState('')
@@ -191,17 +191,10 @@ LEVELS
       <Toolbar onAction={handleToolbarAction} />
 
       <div className="flex-1 overflow-hidden">
-        <SplitPane
-          left={<CodeEditor initialCode={code} onChange={handleCodeChange} />}
-          right={
-            <SplitPane
-              direction="vertical"
-              initialLeftWidth={70}
-              left={<GameCanvas onCanvasReady={handleCanvasReady} />}
-              right={<Console messages={consoleMessages} onAction={handleConsoleAction} />}
-            />
-          }
-          initialLeftWidth={40}
+        <DockLayout
+          codeEditor={<CodeEditor initialCode={code} onChange={handleCodeChange} />}
+          gameCanvas={<GameCanvas onCanvasReady={handleCanvasReady} />}
+          console={<Console messages={consoleMessages} onAction={handleConsoleAction} />}
         />
       </div>
     </div>
