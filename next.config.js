@@ -2,7 +2,8 @@
 const nextConfig = {
   // Static build settings
   output: "export",
-  basePath: "/puzzlescript",
+  // Use environment variable for basePath - change NEXT_PUBLIC_BASE_PATH in .env.production if you rename the repo
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH || "",
   images: {
     unoptimized: true,
   },

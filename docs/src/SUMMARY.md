@@ -12,4 +12,8 @@
 
 #  Miscellanea
 
-<!-- vim: set tw=2 sw=2 et -->
+# For Developer
+
+- [Github Pages Deploy](./dev/deploy.md)
+
+<!-- vim: set ts=2 sw=2 et -->

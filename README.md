@@ -13,7 +13,6 @@ React + Next.js + Tailwind CSS
 
 ## QuickStart
 
-
 ```bash
 # Make sure `git-lfs` and `nodejs` installed
 node -v
@@ -31,6 +30,7 @@ npm install
 npm run dev
 ```
 
+If you want to deploy this at your only github pages, See [develop.md](https://qiekn.github.io/puzzlescript/docs/dev/deploy.html)
 
 ## Commands
 

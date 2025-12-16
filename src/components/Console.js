@@ -4,6 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import { Volume2 } from "lucide-react";
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
 export default function Console({ messages = [], onAction }) {
   const [showLayers, setShowLayers] = useState(false);
   const [verboseLogging, setVerboseLogging] = useState(false);
@@ -52,7 +54,7 @@ export default function Console({ messages = [], onAction }) {
           title="clear the console"
         >
           <Image
-            src="/images/close-window.png"
+            src={`${basePath}/images/close-window.png`}
             alt="Clear"
             width={16}
             height={16}
@@ -68,7 +70,7 @@ export default function Console({ messages = [], onAction }) {
           title="toggle verbose logging"
         >
           <Image
-            src="/images/megaphone.png"
+            src={`${basePath}/images/megaphone.png`}
             alt="Verbose"
             width={16}
             height={16}
@@ -83,7 +85,7 @@ export default function Console({ messages = [], onAction }) {
           className={`hover:opacity-80 transition-opacity ${debugLogging ? "opacity-100" : "opacity-50"}`}
           title="toggle compiler debug mode"
         >
-          <Image src="/images/doc.png" alt="Debug" width={16} height={16} />
+          <Image src={`${basePath}/images/doc.png`} alt="Debug" width={16} height={16} />
         </button>
 
         <button
@@ -94,7 +96,7 @@ export default function Console({ messages = [], onAction }) {
           className={`hover:opacity-80 transition-opacity ${showLayers ? "opacity-100" : "opacity-50"}`}
           title="toggle show layers"
         >
-          <Image src="/images/layers.png" alt="Layers" width={16} height={16} />
+          <Image src={`${basePath}/images/layers.png`} alt="Layers" width={16} height={16} />
         </button>
 
         <button
@@ -102,7 +104,7 @@ export default function Console({ messages = [], onAction }) {
           className="hover:opacity-80 transition-opacity"
           title="run program"
         >
-          <Image src="/images/run.png" alt="Run" width={16} height={16} />
+          <Image src={`${basePath}/images/run.png`} alt="Run" width={16} height={16} />
         </button>
 
         <button
@@ -110,7 +112,7 @@ export default function Console({ messages = [], onAction }) {
           className="hover:opacity-80 transition-opacity"
           title="make GIF"
         >
-          <Image src="/images/gif.png" alt="GIF" width={16} height={16} />
+          <Image src={`${basePath}/images/gif.png`} alt="GIF" width={16} height={16} />
         </button>
 
         <button
@@ -119,7 +121,7 @@ export default function Console({ messages = [], onAction }) {
           title="make level all objects"
         >
           <Image
-            src="/images/checkerboard.png"
+            src={`${basePath}/images/checkerboard.png`}
             alt="Level All"
             width={16}
             height={16}
@@ -137,7 +139,7 @@ export default function Console({ messages = [], onAction }) {
             title={btn.title}
           >
             <Image
-              src={`/images/${btn.icon}`}
+              src={`${basePath}/images/${btn.icon}`}
               alt={btn.title}
               width={16}
               height={16}
