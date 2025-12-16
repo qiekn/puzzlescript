@@ -1,0 +1,127 @@
+title test min text
+author polyomino
+homepage www.polyomino.com
+
+// test program for TEXT sprites
+sprite_size 7
+
+verbose_logging
+debug
+========
+OBJECTS
+========
+
+Background
+grey darkgray lightgray
+2222221
+2000001
+2000001
+2000001
+2000001
+2000001
+1111111
+
+Player P; Yellow Green Red Black
+...........
+....222....
+...03030...
+....000....
+.011111110.
+.011111110.
+...11111...
+...22.22...
+...22.22...
+..333.333..
+...........
+
+//Background;grey
+R;RED
+B;BLUE
+g;green
+y;yellow
+k;pink
+
+s
+purple
+text: S
+
+t; orange
+text: t
+
+u; pink;   text: Ab3
+f; red;    text: A
+e; blue;   text: A
+0         ; blue; text: 0
+1 scale:1  ; blue; text: 1
+2 scale:1.1; blue; text: 2
+3 scale:0.9; blue; text: 3
+4 scale:0.8; blue; text: 4
+5 scale:0.7; blue; text: 5
+6 scale:0.6; blue; text: 6
+7 scale:0.5; blue; text: 7
+8 scale:0.4; blue; text: 8
+9 scale:0.3; blue; text: 9
+x scale:1  ; blue; text: 99
+w scale:1  ; blue; text: 999
+z scale:1  ; blue; text: 9999
+
+star * scale:0.6
+red; text: ⭐
+
+=======
+LEGEND
+=======
+. = Background
+a = b and k
+o = b or g
+ork = r or k
+rgb = r or g or b
+gbr = g or b or r
+numbers = 0 or 1 or 2 or 3 or 4 or 5 or 6 or 7 or 8 or 9 or x or w or z
+
+=======
+SOUNDS
+=======
+================
+COLLISIONLAYERS
+================
+Background
+--
+y
+Player, R, B, G
+k
+s
+t
+u,f,e
+numbers
+star
+
+======
+RULES
+======
+
+[ > p | r ] -> [ > p | > r ]
+[ action p ] -> win
+==============
+WINCONDITIONS
+==============
+
+=======
+LEVELS
+=======
+
+//message first level
+
+............
+.....p......
+.0123456789.
+.r.s.t.u.f..
+..x.w.z.*.e.
+............
+
+message second level
+
+..........
+....pry...
+..........
+

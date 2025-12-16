@@ -1,0 +1,243 @@
+title test min tags
+author polyomino
+homepage www.polyomino.com
+
+// test program for new TAG section
+
+sprite_size 7
+verbose_logging
+debug
+debug_switch tag,map,obj,layer,prop
+
+====
+TAGS
+====
+tag1 = t11 t12 t13 t14
+tag2 = t21 t22 t23 t24
+tag3 = t31 tag1 tag2
+tagbool = true false
+dirs = up down left right
+num4 = n1 n2 n3 n4
+num5 = n1 n2 n3 n4 n5
+// hebird
+ID = D1 D2 D3 D4
+NEXT = KM KQ KW KE KA KS KD
+PREV = KM KQ KW KE KA KS KD
+LEAN = LL LM LR LU LD
+
+========
+MAPPINGS
+========
+num4 => next4
+n1 n2 n3 n4 -> n2 n3 n4 n4
+num4 => prev4
+n1 n2 n3 n4 -> n1 n1 n2 n3
+
+num5 => next5
+n1 n2 n3 n4 n5 -> n2 n3 n4 n5 n5
+num5 => prev5
+n1 n2 n3 n4 n5 -> n1 n1 n2 n3 n4
+
+dirs => revs
+up down left right -> down up right left
+
+========
+OBJECTS
+========
+Background .
+grey darkgray lightgray
+2222221
+2000001
+2000001
+2000001
+2000001
+2000001
+1111111
+
+PLAYER P;yellow
+r; red
+
+obj:tagbool
+pink
+
+obj1
+white red
+00111
+00100
+01100
+00100
+00100
+
+obj1a
+white darkred
+copy: obj1 rot:down:>
+
+obj2:dirs
+white blue
+00111
+00100
+01100
+00100
+00100
+rot:up:dirs
+
+obj3:dirs
+white green
+copy: obj1 rot:right:dirs
+
+obj4:dirs
+white purple
+copy: obj2:dirs rot:down:dirs
+
+obj5:tag1:dirs
+white brown
+copy: obj3:dirs rot:left:dirs
+
+obj6:tag1:dirs:tag2
+white brown
+copy: obj5:tag1:dirs shift:down
+
+obj7:true
+pink
+
+obj7:false
+purple
+
+objn4:num4
+green
+
+objn5:num5
+blue
+
+// hebird
+Eyes:PREV:LEAN
+white black
+..0.0
+.00000
+..0.0
+.
+.
+.
+
+Eyes:KM:LL @
+white black
+..0.0
+.10100
+..0.0
+.
+.
+.
+
+Eyes:KM:LM #
+white black
+..0.0
+.01010
+..0.0
+.
+.
+.
+
+Snake:ID:NEXT:PREV
+red darkred orange
+.........
+..00.00..
+.00...00.
+.........
+.........
+.00...00.
+..00.00..
+.........
+translate:left:1
+
+Snake:ID:KM:KM
+red darkred orange
+....0....
+..00100..
+.0011100.
+.0111110.
+.0111110.
+.0022200.
+..00200..
+.........
+translate:left:1
+
+=======
+LEGEND
+=======
+1 = obj1
+2 = obj2:left
+3 = obj3:left
+4 = obj4:left
+5 = obj5:t11:left
+6 = obj6:t12:up:t23
+objax = obj1 or obj1a
+! = Eyes:KM:LR
+Snake:D1:KM = Snake:D1:KM:PREV
+% = Snake:D1:KM:KM
+
+================
+COLLISIONLAYERS
+================
+Background
+Player, r
+--
+obj:tagbool
+objax, obj2:dirs, obj3:dirs
+dirs -> obj4:dirs, obj5:tag1:dirs
+obj6:tag1:dirs:tag2
+obj7:true,obj7:false
+objn4:num4, objn5:num5
+--
+eyes:prev:lean
+Snake:ID:NEXT:PREV
+
+======
+RULES
+======
+
+// mappings
+num4 [ objn4:num4 ] -> [ objn4:num4 ]
+num4 [ objn4:num4 | ] -> [ objn4:num4 | objn4:num4 ]
+num4 [ objn4:num4 | ] -> [ objn4:num4 | objn4:next4 ]
+//num4 [ objn4:num4 | ] -> [ objn4:num4 | objn4:prev5 ]       // invalid
+//num4 [ objn4:num4 | ] -> [ objn4:num4 | objn4:next5 ]
+
+// check props
+right [ ^ p | obj6:t12:up:tag2 ] -> [ p | ]
+right [ < p | obj6:t12:dirs:tag2 ] -> [ p | ]
+right [ < p | no obj6:t12:dirs:tag2 ] -> [ p | ]
+right [ < p | no obj6:t12:>:tag2 ] -> [ p | ]    // triggers inline expansion bug #38
+tag1 [no obj5:tag1:dirs] -> []                  // triggers inline expansion bug #145
+
+// check prefixes
+right dirs [ ^ p | obj2:dirs ] -> [ p | obj4:dirs ]
+right tag1 dirs [ ^ p | obj2:dirs ] -> [ p | obj5:tag1:dirs ]
+right tag1 tag2 dirs [ ^ p | obj2:dirs ] -> [ p | obj6:tag1:dirs:tag2 ]
+right [ obj7:tagbool | obj7:tagbool ] -> [ obj7:tagbool | ] 
+
+// check map
+right dirs [ ^ p | obj2:dirs ] -> [ p | obj2:revs ]
+right dirs [ ^ p | obj2:revs ] -> [ p | obj2:dirs ]
+right dirs [ ^ p | no obj2:revs ] -> [ p | obj2:dirs ]
+
+right [ > p | r ] -> [ > p | > r ]
+right [ ^ p | obj1 ] -> [ p | ]
+right [ v p | obj2:< ] -> [ p | ]
+right [ v p | obj3:perpendicular ] -> [ p | ]
+right [ ^ p | obj3:dirs ] -> [ p | ]
+right [ ^ p | obj4:dirs ] -> [ p | ]
+right [ v p | obj1 ] -> [ p | ]
+
+[ p obj2:perpendicular ] -> cancel // #171
+
+=======
+LEVELS
+=======
+
+...........
+..1....2...
+....pr.3...
+.......4...
+.!.@.#.....
+.%.........
+...........
