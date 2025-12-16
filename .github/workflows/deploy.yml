@@ -3,7 +3,7 @@ name: Deploy Next.js & mdBook to Pages
 on:
   push:
     branches:
-      - main
+      - react
   workflow_dispatch:
 
 permissions:
