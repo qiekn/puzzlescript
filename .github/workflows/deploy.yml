@@ -1,0 +1,88 @@
+name: Deploy Next.js & mdBook to Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true
+
+      # -----------------------------------------------------------
+      # PART 1: Install & Build mdBook (Using official curl method)
+      # -----------------------------------------------------------
+      - name: Install latest mdbook
+        run: |
+          # Fetch the latest tag from GitHub API
+          tag=$(curl 'https://api.github.com/repos/rust-lang/mdbook/releases/latest' | jq -r '.tag_name')
+
+          # Construct the download URL
+          url="https://github.com/rust-lang/mdbook/releases/download/${tag}/mdbook-${tag}-x86_64-unknown-linux-gnu.tar.gz"
+
+          # Create directory and extract
+          mkdir mdbook
+          curl -sSL $url | tar -xz --directory=./mdbook
+
+          # Add to PATH so we can run 'mdbook' command
+          echo `pwd`/mdbook >> $GITHUB_PATH
+
+      - name: Build mdBook
+        run: |
+          # Your mdBook source is inside the 'docs' folder
+          # This generates the output at docs/book/
+          mdbook build docs
+
+      # ---------------------------------------------------------
+      # PART 2: Install & Build Next.js
+      # ---------------------------------------------------------
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: 'npm'
+
+      - name: Install Node Dependencies
+        run: npm ci
+
+      - name: Build Next.js
+        run: npm run build
+        # Next.js generates the output at 'out/'
+
+      # ---------------------------------------------------------
+      # PART 3: Merge & Deploy
+      # ---------------------------------------------------------
+      - name: Merge mdBook into Next.js output
+        run: |
+          # Move the mdBook build output (docs/book)
+          # into the Next.js static output folder (out/docs)
+          mv docs/book out/docs
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload the consolidated 'out' directory which contains both sites
+          path: 'out'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

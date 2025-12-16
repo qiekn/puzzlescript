@@ -1,5 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Static build settings
+  output: "export",
+  basePath: "/puzzlescript",
+  images: {
+    unoptimized: true,
+  },
+
   reactStrictMode: true,
   webpack: (config) => {
     // Handle canvas and other node modules
@@ -10,6 +17,6 @@ const nextConfig = {
     };
     return config;
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
