@@ -1,16 +1,14 @@
-'use client'
+"use client";
 
-import { useRef, useCallback } from 'react'
-import * as FlexLayout from 'flexlayout-react'
-import 'flexlayout-react/style/dark.css'
+import { useRef, useCallback, forwardRef, useImperativeHandle } from "react";
+import * as FlexLayout from "flexlayout-react";
+import "flexlayout-react/style/dark.css";
 
-export default function DockLayout({
-  codeEditor,
-  gameCanvas,
-  console,
-  onLayoutChange
-}) {
-  const layoutRef = useRef(null)
+const DockLayout = forwardRef(function DockLayout(
+  { codeEditor, gameCanvas, console, themeEditor, onLayoutChange },
+  ref,
+) {
+  const layoutRef = useRef(null);
 
   // Define the initial layout model
   const defaultLayout = {
@@ -23,46 +21,56 @@ export default function DockLayout({
       tabSetTabStripHeight: 28,
       borderBarSize: 32,
       borderEnableDrop: true,
+      splitterSize: 8,
     },
     borders: [],
     layout: {
-      type: 'row',
+      type: "row",
       weight: 100,
       children: [
         {
-          type: 'tabset',
+          type: "tabset",
           weight: 40,
           children: [
             {
-              type: 'tab',
-              name: 'Code Editor',
-              component: 'codeEditor',
+              type: "tab",
+              name: "Code Editor",
+              component: "codeEditor",
+              enableClose: false,
+            },
+            {
+              type: "tab",
+              name: "Theme Editor",
+              component: "themeEditor",
+              enableClose: true,
             },
           ],
         },
         {
-          type: 'column',
+          type: "column",
           weight: 60,
           children: [
             {
-              type: 'tabset',
+              type: "tabset",
               weight: 70,
               children: [
                 {
-                  type: 'tab',
-                  name: 'Game Canvas',
-                  component: 'gameCanvas',
+                  type: "tab",
+                  name: "Game Canvas",
+                  component: "gameCanvas",
+                  enableClose: false,
                 },
               ],
             },
             {
-              type: 'tabset',
+              type: "tabset",
               weight: 30,
               children: [
                 {
-                  type: 'tab',
-                  name: 'Console',
-                  component: 'console',
+                  type: "tab",
+                  name: "Console",
+                  component: "console",
+                  enableClose: false,
                 },
               ],
             },
@@ -70,58 +78,67 @@ export default function DockLayout({
         },
       ],
     },
-  }
+  };
 
   // Load saved layout from localStorage or use default
   const getInitialModel = () => {
-    if (typeof window !== 'undefined') {
-      const savedLayout = localStorage.getItem('puzzlescript_layout')
+    if (typeof window !== "undefined") {
+      const savedLayout = localStorage.getItem("puzzlescript_layout");
       if (savedLayout) {
         try {
-          return FlexLayout.Model.fromJson(JSON.parse(savedLayout))
+          return FlexLayout.Model.fromJson(JSON.parse(savedLayout));
         } catch (e) {
-          console.error('Failed to load saved layout:', e)
+          console.error("Failed to load saved layout:", e);
         }
       }
     }
-    return FlexLayout.Model.fromJson(defaultLayout)
-  }
+    return FlexLayout.Model.fromJson(defaultLayout);
+  };
 
-  const modelRef = useRef(getInitialModel())
-  const model = modelRef.current
+  const modelRef = useRef(getInitialModel());
+  const model = modelRef.current;
+
+  useImperativeHandle(ref, () => ({
+    getModel: () => modelRef.current,
+  }));
 
   // Factory function to render components
   const factory = (node) => {
-    const component = node.getComponent()
+    const component = node.getComponent();
 
     switch (component) {
-      case 'codeEditor':
-        return codeEditor
-      case 'gameCanvas':
-        return gameCanvas
-      case 'console':
-        return console
+      case "codeEditor":
+        return codeEditor;
+      case "gameCanvas":
+        return gameCanvas;
+      case "console":
+        return console;
+      case "themeEditor":
+        return themeEditor;
       default:
-        return <div>Unknown component: {component}</div>
+        return <div>Unknown component: {component}</div>;
     }
-  }
+  };
 
   // Save layout when it changes
-  const handleModelChange = useCallback((model) => {
-    if (typeof window !== 'undefined') {
-      const json = model.toJson()
-      localStorage.setItem('puzzlescript_layout', JSON.stringify(json))
-      if (onLayoutChange) {
-        onLayoutChange(json)
+  const handleModelChange = useCallback(
+    (model) => {
+      if (typeof window !== "undefined") {
+        const json = model.toJson();
+        localStorage.setItem("puzzlescript_layout", JSON.stringify(json));
+        if (onLayoutChange) {
+          onLayoutChange(json);
+        }
       }
-    }
-  }, [onLayoutChange])
+    },
+    [onLayoutChange],
+  );
 
   return (
     <div className="flex-1 h-full w-full relative">
       <style jsx global>{`
         .flexlayout__layout {
-          background: #1a1a2e;
+          background: var(--color-bg);
           position: absolute;
           top: 0;
           left: 0;
@@ -130,77 +147,128 @@ export default function DockLayout({
         }
 
         .flexlayout__tabset {
-          background: #16213e;
+          background: transparent;
+          border: none !important;
+          outline: none !important;
+          padding: 8px;
         }
 
         .flexlayout__tabset_header {
-          background: #0f3460;
-          border-bottom: 1px solid #1a1a2e;
+          background: transparent;
+          border: none !important;
+          outline: none !important;
+          padding: 0;
         }
 
         .flexlayout__tab {
-          background: #0f3460;
-          color: #ffffff;
+          background: transparent;
+          color: var(--color-textMuted);
           border: none;
+          border-radius: 0;
+          margin-right: 0;
+          position: relative;
+          padding: 3px 0px;
         }
 
         .flexlayout__tab:hover {
-          background: #e94560;
+          color: var(--color-text);
         }
 
         .flexlayout__tab_button--selected {
-          background: #16213e !important;
-          color: #ffffff;
+          background: transparent !important;
+          color: var(--color-text);
+          border-bottom: 2px solid var(--color-accent) !important;
         }
 
         .flexlayout__splitter {
-          background: #0f3460;
+          background: transparent;
+          border: none;
         }
 
         .flexlayout__splitter:hover {
-          background: #e94560;
+          background: transparent;
         }
 
         .flexlayout__splitter_drag {
-          background: #e94560;
+          background: var(--color-accent);
+          opacity: 0.5;
         }
 
         .flexlayout__tab_button_content {
-          color: #ffffff;
+          color: var(--color-text);
         }
 
         .flexlayout__border_button {
-          background: #0f3460;
-          color: #ffffff;
+          background: var(--color-bgTertiary);
+          color: var(--color-text);
         }
 
         .flexlayout__border_button:hover {
-          background: #e94560;
+          background: var(--color-accentHover);
         }
 
         .flexlayout__border_button--selected {
-          background: #16213e;
+          background: var(--color-accent);
         }
 
         .flexlayout__tabset_tabbar_outer {
-          background: #0f3460;
+          background: var(--color-bgTertiary);
+          border-radius: 8px 8px 0 0;
         }
 
         .flexlayout__tabset_content {
-          background: #1a1a2e;
+          background: var(--color-bgTertiary);
+          border: none !important;
+          border-radius: 0 0 8px 8px !important;
+          overflow: hidden;
+        }
+
+        .flexlayout__tabset-selected {
+          border: none !important;
+          outline: none !important;
+        }
+
+        .flexlayout__tabset-selected .flexlayout__tabset_content {
+          border: none !important;
+          outline: none !important;
+        }
+
+        .flexlayout__tabset-selected .flexlayout__tabset_header {
+          border: none !important;
+          outline: none !important;
+        }
+
+        .flexlayout__border {
+          border: none !important;
+          outline: none !important;
+        }
+
+        .flexlayout__tabset_header_outer {
+          border: none !important;
+          outline: none !important;
+        }
+
+        .flexlayout__tabset_tabbar_outer_top {
+          border: none !important;
+          outline: none !important;
+        }
+
+        .flexlayout__tabset_header_inner {
+          border: none !important;
+          outline: none !important;
         }
 
         .flexlayout__popup_menu {
-          background: #16213e;
-          border: 1px solid #0f3460;
+          background: var(--color-panel);
+          border: 1px solid var(--color-border);
         }
 
         .flexlayout__popup_menu_item {
-          color: #ffffff;
+          color: var(--color-text);
         }
 
         .flexlayout__popup_menu_item:hover {
-          background: #e94560;
+          background: var(--color-accentHover);
         }
       `}</style>
 
@@ -211,5 +279,7 @@ export default function DockLayout({
         onModelChange={handleModelChange}
       />
     </div>
-  )
-}
+  );
+});
+
+export default DockLayout;

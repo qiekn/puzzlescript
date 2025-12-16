@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "flexlayout-react": "^0.8.17",
+    "lucide-react": "^0.561.0",
     "next": "^14.0.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"

@@ -2,9 +2,7 @@ export default function HelloPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900">
       <div className="text-center">
-        <h1 className="text-6xl font-bold text-white mb-4">
-          Hello World! 👋
-        </h1>
+        <h1 className="text-6xl font-bold text-white mb-4">Hello World! 👋</h1>
         <p className="text-xl text-gray-300 mb-8">
           Next.js + React + Tailwind CSS 正在运行！
         </p>
@@ -30,5 +28,5 @@ export default function HelloPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

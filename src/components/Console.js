@@ -1,61 +1,86 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Image from 'next/image'
+import { useState } from "react";
+import Image from "next/image";
+import { Volume2 } from "lucide-react";
 
 export default function Console({ messages = [], onAction }) {
-  const [showLayers, setShowLayers] = useState(false)
-  const [verboseLogging, setVerboseLogging] = useState(false)
-  const [debugLogging, setDebugLogging] = useState(false)
+  const [showLayers, setShowLayers] = useState(false);
+  const [verboseLogging, setVerboseLogging] = useState(false);
+  const [debugLogging, setDebugLogging] = useState(false);
 
   const handleAction = (action) => {
     if (onAction) {
-      onAction(action)
+      onAction(action);
     }
-  }
+  };
 
+  // prettier-ignore
   const soundButtons = [
-    { id: 'newsound0', title: 'collect item sound', icon: 'audio1.png' },
-    { id: 'newsound7', title: 'push sounds', icon: 'audio2.png' },
-    { id: 'newsound2', title: 'explosion sound', icon: 'audio3.png' },
-    { id: 'newsound3', title: 'powerup sound', icon: 'audio4.png' },
-    { id: 'newsound9', title: 'bird tweet sound', icon: 'audio5.png' },
-    { id: 'newsound4', title: 'hurt sound', icon: 'audio6.png' },
-    { id: 'newsound5', title: 'jump sound', icon: 'audio7.png' },
-    { id: 'newsound1', title: 'pew pew sound', icon: 'audio8.png' },
-    { id: 'newsound6', title: 'selection sound', icon: 'audio9.png' },
-    { id: 'newsound8', title: 'random sound', icon: 'audio10.png' },
-  ]
+    { id: "newsound0", title: "collect item sound",  icon: "audio1.png"  },
+    { id: "newsound7", title: "push sounds",         icon: "audio2.png"  },
+    { id: "newsound2", title: "explosion sound",     icon: "audio3.png"  },
+    { id: "newsound3", title: "powerup sound",       icon: "audio4.png"  },
+    { id: "newsound9", title: "bird tweet sound",    icon: "audio5.png"  },
+    { id: "newsound4", title: "hurt sound",          icon: "audio6.png"  },
+    { id: "newsound5", title: "jump sound",          icon: "audio7.png"  },
+    { id: "newsound1", title: "pew pew sound",       icon: "audio8.png"  },
+    { id: "newsound6", title: "selection sound",     icon: "audio9.png"  },
+    { id: "newsound8", title: "random sound",        icon: "audio10.png" },
+  ];
 
   return (
-    <div className="flex flex-col h-full bg-puzzlescript-panel">
+    <div
+      className="flex flex-col h-full"
+      style={{
+        backgroundColor: "var(--color-bgTertiary)",
+        border: "none",
+        borderRadius: "0",
+        overflow: "hidden",
+      }}
+    >
       {/* Toolbar */}
-      <div className="bg-puzzlescript-accent px-4 py-2 flex items-center gap-3 flex-wrap border-b border-puzzlescript-bg">
+      <div
+        className="px-4 py-2 flex items-center gap-3 flex-wrap"
+        style={{
+          backgroundColor: "var(--color-accent)",
+        }}
+      >
         <button
-          onClick={() => handleAction('clearConsole')}
+          onClick={() => handleAction("clearConsole")}
           className="hover:opacity-80 transition-opacity"
           title="clear the console"
         >
-          <Image src="/images/close-window.png" alt="Clear" width={16} height={16} />
+          <Image
+            src="/images/close-window.png"
+            alt="Clear"
+            width={16}
+            height={16}
+          />
         </button>
 
         <button
           onClick={() => {
-            setVerboseLogging(!verboseLogging)
-            handleAction('verboseLogging')
+            setVerboseLogging(!verboseLogging);
+            handleAction("verboseLogging");
           }}
-          className={`hover:opacity-80 transition-opacity ${verboseLogging ? 'opacity-100' : 'opacity-50'}`}
+          className={`hover:opacity-80 transition-opacity ${verboseLogging ? "opacity-100" : "opacity-50"}`}
           title="toggle verbose logging"
         >
-          <Image src="/images/megaphone.png" alt="Verbose" width={16} height={16} />
+          <Image
+            src="/images/megaphone.png"
+            alt="Verbose"
+            width={16}
+            height={16}
+          />
         </button>
 
         <button
           onClick={() => {
-            setDebugLogging(!debugLogging)
-            handleAction('debugLogging')
+            setDebugLogging(!debugLogging);
+            handleAction("debugLogging");
           }}
-          className={`hover:opacity-80 transition-opacity ${debugLogging ? 'opacity-100' : 'opacity-50'}`}
+          className={`hover:opacity-80 transition-opacity ${debugLogging ? "opacity-100" : "opacity-50"}`}
           title="toggle compiler debug mode"
         >
           <Image src="/images/doc.png" alt="Debug" width={16} height={16} />
@@ -63,17 +88,17 @@ export default function Console({ messages = [], onAction }) {
 
         <button
           onClick={() => {
-            setShowLayers(!showLayers)
-            handleAction('showLayers')
+            setShowLayers(!showLayers);
+            handleAction("showLayers");
           }}
-          className={`hover:opacity-80 transition-opacity ${showLayers ? 'opacity-100' : 'opacity-50'}`}
+          className={`hover:opacity-80 transition-opacity ${showLayers ? "opacity-100" : "opacity-50"}`}
           title="toggle show layers"
         >
           <Image src="/images/layers.png" alt="Layers" width={16} height={16} />
         </button>
 
         <button
-          onClick={() => handleAction('runProgram')}
+          onClick={() => handleAction("runProgram")}
           className="hover:opacity-80 transition-opacity"
           title="run program"
         >
@@ -81,7 +106,7 @@ export default function Console({ messages = [], onAction }) {
         </button>
 
         <button
-          onClick={() => handleAction('makeGif')}
+          onClick={() => handleAction("makeGif")}
           className="hover:opacity-80 transition-opacity"
           title="make GIF"
         >
@@ -89,11 +114,16 @@ export default function Console({ messages = [], onAction }) {
         </button>
 
         <button
-          onClick={() => handleAction('gotoLevelAll')}
+          onClick={() => handleAction("gotoLevelAll")}
           className="hover:opacity-80 transition-opacity"
           title="make level all objects"
         >
-          <Image src="/images/checkerboard.png" alt="Level All" width={16} height={16} />
+          <Image
+            src="/images/checkerboard.png"
+            alt="Level All"
+            width={16}
+            height={16}
+          />
         </button>
 
         <span className="text-gray-500">|</span>
@@ -106,21 +136,36 @@ export default function Console({ messages = [], onAction }) {
             className="hover:opacity-80 transition-opacity"
             title={btn.title}
           >
-            <Image src={`/images/${btn.icon}`} alt={btn.title} width={16} height={16} />
+            <Image
+              src={`/images/${btn.icon}`}
+              alt={btn.title}
+              width={16}
+              height={16}
+            />
           </button>
         ))}
       </div>
 
       {/* Console output */}
-      <div className="flex-1 overflow-auto p-4 font-mono text-sm text-green-400 bg-black custom-scrollbar">
+      <div
+        className="flex-1 overflow-auto p-4 font-mono text-sm custom-scrollbar"
+        style={{
+          backgroundColor: "var(--color-bgSecondary)",
+          color: "var(--color-success)",
+        }}
+      >
         <div className="whitespace-pre-wrap">
-          ======================================<br />
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PuzzleScript Next Console<br />
-          &nbsp;&nbsp;&nbsp;React Edition<br />
+          ======================================
           <br />
-          Thank you for using PuzzleScript Next!<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PuzzleScript Next Console
           <br />
-          Please see the{' '}
+          &nbsp;&nbsp;&nbsp;React Edition
+          <br />
+          <br />
+          Thank you for using PuzzleScript Next!
+          <br />
+          <br />
+          Please see the{" "}
           <a
             href="https://github.com/david-pfx/PuzzleScriptNext"
             target="_blank"
@@ -128,10 +173,13 @@ export default function Console({ messages = [], onAction }) {
             className="text-blue-400 hover:underline"
           >
             README
-          </a>{' '}
-          for more<br />
-          information about this release.<br />
-          ======================================<br />
+          </a>{" "}
+          for more
+          <br />
+          information about this release.
+          <br />
+          ======================================
+          <br />
           <br />
           {messages.map((msg, idx) => (
             <div key={idx}>{msg}</div>
@@ -139,5 +187,5 @@ export default function Console({ messages = [], onAction }) {
         </div>
       </div>
     </div>
-  )
+  );
 }

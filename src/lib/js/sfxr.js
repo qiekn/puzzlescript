@@ -811,7 +811,8 @@ window.console.log(psstring);*/
     else if (env_stage === 1)
       env_vol =
         1.0 +
-        Math.pow(1.0 - env_time / env_length[1], 1.0) * 2.0 * ps.p_env_punch; // env_stage == 2
+        Math.pow(1.0 - env_time / env_length[1], 1.0) * 2.0 * ps.p_env_punch;
+    // env_stage == 2
     else env_vol = 1.0 - env_time / env_length[2];
 
     // Phaser step

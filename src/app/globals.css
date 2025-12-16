@@ -3,15 +3,44 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* Default Tokyo Night theme colors */
+    --color-bg: #1a1b26;
+    --color-bgSecondary: #16161e;
+    --color-bgTertiary: #24283b;
+    --color-panel: #1f2335;
+    --color-border: #414868;
+    --color-text: #c0caf5;
+    --color-textSecondary: #a9b1d6;
+    --color-textMuted: #565f89;
+    --color-accent: #7aa2f7;
+    --color-accentHover: #bb9af7;
+    --color-highlight: #f7768e;
+    --color-success: #9ece6a;
+    --color-warning: #e0af68;
+    --color-error: #f7768e;
+    --color-cyan: #7dcfff;
+    --color-purple: #bb9af7;
+    --color-orange: #ff9e64;
+    --color-selection: #364a82;
+    --color-lineNumber: #565f89;
+    --color-scrollbarTrack: #16161e;
+    --color-scrollbarThumb: #414868;
+    --color-scrollbarThumbHover: #7aa2f7;
+  }
+
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
   }
 
-  html, body {
+  html,
+  body {
     height: 100%;
     overflow: hidden;
+    background-color: var(--color-bg);
+    color: var(--color-text);
   }
 
   canvas {
@@ -24,43 +53,64 @@
 
 @layer components {
   .panel {
-    @apply bg-puzzlescript-panel border border-puzzlescript-accent;
+    background-color: var(--color-panel);
+    border-color: var(--color-border);
   }
 
   .toolbar-button {
-    @apply px-3 py-1 bg-puzzlescript-accent hover:bg-puzzlescript-highlight transition-colors cursor-pointer text-sm;
+    padding: 0.25rem 0.75rem;
+    background-color: var(--color-accent);
+    color: var(--color-text);
+    transition: background-color 0.2s;
+    cursor: pointer;
+    font-size: 0.875rem;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .toolbar-button:hover {
+    background-color: var(--color-accentHover);
   }
 
   .split-pane {
-    @apply flex h-full overflow-hidden;
+    display: flex;
+    height: 100%;
+    overflow: hidden;
   }
 
-  /* Custom scrollbar styles */
+  /* Custom scrollbar styles - apply to all scrollable elements */
+  *::-webkit-scrollbar,
   textarea::-webkit-scrollbar,
   .custom-scrollbar::-webkit-scrollbar {
     width: 12px;
     height: 12px;
   }
 
+  *::-webkit-scrollbar-track,
   textarea::-webkit-scrollbar-track,
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: #16213e;
+    background: var(--color-scrollbarTrack);
   }
 
+  *::-webkit-scrollbar-thumb,
   textarea::-webkit-scrollbar-thumb,
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #0f3460;
+    background: var(--color-scrollbarThumb);
     border-radius: 6px;
-    border: 2px solid #16213e;
+    border: 2px solid var(--color-scrollbarTrack);
   }
 
+  *::-webkit-scrollbar-thumb:hover,
   textarea::-webkit-scrollbar-thumb:hover,
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #e94560;
+    background: var(--color-scrollbarThumbHover);
   }
 
+  *::-webkit-scrollbar-corner,
   textarea::-webkit-scrollbar-corner,
   .custom-scrollbar::-webkit-scrollbar-corner {
-    background: #16213e;
+    background: var(--color-scrollbarTrack);
   }
 }

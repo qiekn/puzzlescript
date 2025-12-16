@@ -1262,33 +1262,39 @@ function checkKey(e, justPressed) {
   var inputdir = -1;
   switch (e.keyCode) {
     case 65: //a
-    case 37: { //left
+    case 37: {
+      //left
       inputdir = dirNames.indexOf("left");
       break;
     }
     case 38: //up
-    case 87: { //w
+    case 87: {
+      //w
       inputdir = dirNames.indexOf("up");
       break;
     }
     case 68: //d
-    case 39: { //right
+    case 39: {
+      //right
       inputdir = dirNames.indexOf("right");
       break;
     }
     case 83: //s
-    case 40: { //down
+    case 40: {
+      //down
       inputdir = dirNames.indexOf("down");
       break;
     }
-    case 80: { //p
+    case 80: {
+      //p
       printLevel();
       return prevent(e);
     }
     case 13: //enter
     case 32: //space
     //case 67://c
-    case 88: { //x
+    case 88: {
+      //x
       if (justPressed && ignoreNotJustPressedAction) {
         ignoreNotJustPressedAction = false;
       }
@@ -1303,7 +1309,8 @@ function checkKey(e, justPressed) {
       break;
     }
     case 85: //u
-    case 90: { //z
+    case 90: {
+      //z
       //undo
       if (!textMode) {
         pushInput("undo");
@@ -1313,7 +1320,8 @@ function checkKey(e, justPressed) {
       }
       break;
     }
-    case 82: { //r
+    case 82: {
+      //r
       if (!textMode) {
         if (justPressed) {
           pushInput("restart");
@@ -1324,7 +1332,8 @@ function checkKey(e, justPressed) {
       }
       break;
     }
-    case 27: { //escape
+    case 27: {
+      //escape
       if (solving) {
         stopSolving();
         break;
@@ -1387,7 +1396,8 @@ function checkKey(e, justPressed) {
     case 54: //6
     case 55: //7
     case 56: //8
-    case 57: { //9
+    case 57: {
+      //9
       if (levelEditorOpened && justPressed) {
         var num = 9;
         if (e.keyCode >= 49) {
@@ -1408,7 +1418,8 @@ function checkKey(e, justPressed) {
       }
       break;
     }
-    case 189: { //-
+    case 189: {
+      //-
       if (levelEditorOpened && justPressed) {
         if (glyphSelectedIndex > 0) {
           glyphSelectedIndex--;
@@ -1418,7 +1429,8 @@ function checkKey(e, justPressed) {
       }
       break;
     }
-    case 187: { //+
+    case 187: {
+      //+
       if (levelEditorOpened && justPressed) {
         if (glyphSelectedIndex + 1 < glyphImages.length) {
           glyphSelectedIndex++;
@@ -1428,14 +1440,16 @@ function checkKey(e, justPressed) {
       }
       break;
     }
-    case 33: { //PgUp
+    case 33: {
+      //PgUp
       if (!textMode && showLayers) {
         showLayerNo++; // will be range checked on use
         canvasResize();
         return prevent(e);
       }
     }
-    case 34: { //PgDn
+    case 34: {
+      //PgDn
       if (!textMode && showLayers) {
         showLayerNo--; // will be range checked on use
         canvasResize();
