@@ -56,8 +56,7 @@ export default function HomePage() {
             <div>
               <p className="text-lg text-gray-300 mb-6">
                 A modern React and Next.js implementation of the original HTML5
-                puzzle game engine —— PuzzleScript, styled with Tailwind CSS. It
-                unifies PuzzleScript, and Pattern:Script.
+                puzzle game engine —— PuzzleScript, styled with Tailwind CSS.
               </p>
               <Link
                 href="https://www.puzzlescript.net/"
