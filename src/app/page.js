@@ -50,17 +50,17 @@ export default function HomePage() {
       <div className="container mx-auto px-4 py-16">
         <div className="bg-puzzlescript-panel/50 backdrop-blur-sm rounded-lg p-8 mb-8">
           <h1 className="text-5xl font-bold mb-4 text-white">
-            PuzzleScript Next
+            PuzzleScript React
           </h1>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <p className="text-lg text-gray-300 mb-6">
-                PuzzleScript Next is an open-source HTML5 puzzle game engine,
-                combining PuzzleScript, Puzzlescript Next and Pattern:Script
-                with even more advanced features.
+                A modern React and Next.js implementation of the original HTML5
+                puzzle game engine —— PuzzleScript, styled with Tailwind CSS. It
+                unifies PuzzleScript, and Pattern:Script.
               </p>
               <Link
-                href="https://github.com/david-pfx/PuzzleScriptNext/blob/master/README.md"
+                href="https://www.puzzlescript.net/"
                 className="text-puzzlescript-highlight hover:underline"
                 target="_blank"
               >
@@ -75,10 +75,10 @@ export default function HomePage() {
                 Make A Game
               </Link>
               <Link
-                href="/docs/rules101.html"
+                href="/docs"
                 className="bg-puzzlescript-accent hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-center transition-colors"
               >
-                First Steps
+                Documentations
               </Link>
             </div>
           </div>
