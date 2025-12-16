@@ -4,7 +4,7 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 export const metadata = {
-  title: "PuzzleScript Next",
+  title: "PuzzleScript React",
   description: "HTML5 puzzle game engine",
   icons: {
     icon: [
