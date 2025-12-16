@@ -162,7 +162,7 @@ export default function Toolbar({ onAction, onOpenThemeEditor }) {
         </button>
 
         <Link
-          href="/Documentation/documentation.html"
+          href="/docs/documentation.html"
           target="_blank"
           className="toolbar-button"
         >

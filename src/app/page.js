@@ -75,7 +75,7 @@ export default function HomePage() {
                 Make A Game
               </Link>
               <Link
-                href="/Documentation/rules101.html"
+                href="/docs/rules101.html"
                 className="bg-puzzlescript-accent hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-center transition-colors"
               >
                 First Steps
@@ -112,7 +112,7 @@ export default function HomePage() {
         {/* Gallery Link */}
         <div className="text-center">
           <Link
-            href="/Gallery/index.html"
+            href="/gallery/index.html"
             className="bg-puzzlescript-accent hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg inline-block transition-colors"
           >
             Gallery
