@@ -1,0 +1,190 @@
+title Colour Chart
+author polyomino games
+homepage polyomino.org
+
+// program to show all the colours in a palette
+
+skip_title_screen
+background_color LightGreen
+text_color black
+runtime_metadata_twiddling
+mouse_left
+verbose_logging
+
+========
+OBJECTS
+========
+Background .;#ddd
+
+Player *
+black orange white blue
+.000.
+.111.
+22222
+.333.
+.3.3.
+
+lmb;blue
+BG0;#333
+BG1;#777
+
+// colour patches
+C0; Black
+C1; White
+C2; Grey
+C3; DarkGrey
+C4; LightGrey
+C5; Red
+C6; DarkRed
+C7; LightRed
+C8; Brown
+C9; DarkBrown
+CA; LightBrown
+CB; Orange
+CC; Yellow
+CD; Green
+CE; DarkGreen
+CF; LightGreen
+CG; Blue
+CH; LightBlue
+CI; DarkBlue
+CJ; Purple
+CK; Pink
+
+// text overlay
+T0 scale: 0.18; White; text: Black
+T1 scale: 0.18; Black; text: White
+T2 scale: 0.18; Black; text: Grey
+T3 scale: 0.18; White; text: DarkGrey
+T4 scale: 0.18; Black; text: LightGrey
+T5 scale: 0.18; Black; text: Red
+T6 scale: 0.18; White; text: DarkRed
+T7 scale: 0.18; Black; text: LightRed
+T8 scale: 0.18; Black; text: Brown
+T9 scale: 0.18; White; text: DarkBrown
+TA scale: 0.18; Black; text: LightBrown
+TB scale: 0.18; Black; text: Orange
+TC scale: 0.18; Black; text: Yellow
+TD scale: 0.18; Black; text: Green
+TE scale: 0.18; White; text: DarkGreen
+TF scale: 0.18; Black; text: LightGreen
+TG scale: 0.18; Black; text: Blue
+TH scale: 0.18; Black; text: LightBlue
+TI scale: 0.18; White; text: DarkBlue
+TJ scale: 0.18; Black; text: Purple
+TK scale: 0.18; Black; text: Pink
+
+// palettes
+P0 scale: 0.18; Blue; text: mastersys
+P1 scale: 0.18; Blue; text: gameboy
+P2 scale: 0.18; Blue; text: amiga
+P3 scale: 0.18; Blue; text: arne
+P4 scale: 0.18; Blue; text: famicom       
+P5 scale: 0.18; Blue; text: atari         
+P6 scale: 0.18; Blue; text: pastel        
+P7 scale: 0.18; Blue; text: ega           
+P8 scale: 0.18; Blue; text: amstrad       
+P9 scale: 0.18; Blue; text: pr_mellow
+PA scale: 0.18; Blue; text: pr_rich  
+PB scale: 0.18; Blue; text: pr_night 
+PC scale: 0.18; Blue; text: c64           
+PD scale: 0.18; Blue; text: whitngjp     
+
+=======
+LEGEND
+=======
+
+0 = C0 and T0
+1 = C1 and T1
+2 = C2 and T2
+3 = C3 and T3
+4 = C4 and T4
+5 = C5 and T5
+6 = C6 and T6
+7 = C7 and T7
+8 = C8 and T8
+9 = C9 and T9
+A = CA and TA
+B = CB and TB
+C = CC and TC
+D = CD and TD
+E = CE and TE
+F = CF and TF
+G = CG and TG
+H = CH and TH
+I = CI and TI
+J = CJ and TJ
+K = CK and TK
+L = P0 and BG0
+M = P1 and BG1
+N = P2 and BG0
+O = P3 and BG1
+P = P4 and BG0
+Q = P5 and BG1
+R = P6 and BG0
+S = P7 and BG1
+T = P8 and BG0
+U = P9 and BG1
+V = PA and BG0
+W = PB and BG1
+X = PC and BG0
+Y = PD and BG1
+
+Colours = C0 or C1 or C2 or C3 or C4 or C5 or C6 or C7 or C8 or C9 or CA or CB or CC or CD or CE or CF or CG or CH or CI or CJ or CK
+Texts   = T0 or T1 or T2 or T3 or T4 or T5 or T6 or T7 or T8 or T9 or TA or TB or TC or TD or TE or TF or TG or TH or TI or TJ or TK
+Palettes = P0 or P1 or P2 or P3 or P4 or P5 or P6 or P7 or P8 or P9 or PA or PB or PC or PD
+
+======
+SOUNDS
+======
+
+================
+COLLISIONLAYERS
+================
+
+Background
+BG0, BG1
+Colours
+Player
+Texts
+Palettes
+lmb
+
+=====
+RULES
+=====
+
+[ lmb Palettes ] -> [ player Palettes ]
+[ lmb ] -> []
+
+late [ Player P0 ] -> color_palette mastersystem  
+late [ Player P1 ] -> color_palette gameboycolour 
+late [ Player P2 ] -> color_palette amiga
+late [ Player P3 ] -> color_palette arnecolors    
+late [ Player P4 ] -> color_palette famicom            
+late [ Player P5 ] -> color_palette atari              
+late [ Player P6 ] -> color_palette pastel             
+late [ Player P7 ] -> color_palette ega                
+late [ Player P8 ] -> color_palette amstrad            
+late [ Player P9 ] -> color_palette proteus_mellow
+late [ Player PA ] -> color_palette proteus_rich  
+late [ Player PB ] -> color_palette proteus_night 
+late [ Player PC ] -> color_palette c64                
+late [ Player PD ] -> color_palette whitingjp         
+
+=============
+WINCONDITIONS
+=============
+
+=======
+LEVELS
+=======
+
+.......
+LMNOPQR
+STUVWXY
+...*...
+0123456
+789ABCD
+EFGHIJK
+.......

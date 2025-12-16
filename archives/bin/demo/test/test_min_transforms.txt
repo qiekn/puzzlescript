@@ -1,0 +1,345 @@
+title test min sprite transforms
+author polyomino
+homepage www.polyomino.com
+
+// test program showing sprite transforms
+
+run_rules_on_level_start
+verbose_logging
+debug
+debug_switch obj
+sprite_size 7
+
+====
+tags
+====
+
+dirs = up down left right
+offs = up down left right
+t1 = right left down up
+t2 = up left down right
+t3 = red green blue
+// hat tricks
+AX = A1 A2 A3 A4 A5
+elevation = 0 1 2
+X5 = 1 2 3 4 5
+
+MAPPINGS
+elevation => prevElevation
+0 1 2 -> 2 0 1
+
+X5 => prevX5
+1 2 3 4 5 -> 5 1 2 3 4
+
+X5 => translation
+1 2 3 4 5 -> 1 1 2 2 3
+
+X5 => otherDirection
+1 2 3 4 5 -> up down up down up
+
+========
+OBJECTS
+========
+
+Background
+grey darkgray lightgray
+2222221
+2000001
+2000001
+2000001
+2000001
+2000001
+1111111
+
+Player p
+black orange white blue
+.000.
+.111.
+22222
+.333.
+.3.3.
+
+a;black red blue
+2222222
+2011002
+2001002
+2001102
+2001002
+2001002
+2222222
+
+b;black red blue
+copy: a |
+
+q;black red blue
+copy: a -
+
+c;black red blue
+copy: a translate:right:3 
+translate:down:2 
+
+d;black red blue
+copy: a shift:right
+
+e;black red blue
+copy: a rot:down
+
+f;black red blue
+copy: a translate:right:3 shift:right rot:right
+
+g;black red blue
+copy: f flip:right translate:right:3 shift:right rot:up:left
+
+b:t1;black red blue
+copy: a flip:t1
+
+u:dirs;blue yellow green
+copy:f flip:dirs translate:dirs:2 shift:dirs:1 rot:^:dirs
+
+w;purple
+r;red
+o;orange
+x;transparent
+y;transparent
+z;transparent
+
+con:dirs
+#036965 orange red
+111111111
+2.......2
+2.00000.2
+2.00000.2
+2.00....2
+2.00000.2
+2.00000.2
+2.00....2
+2.00....2
+2.00....2
+2.00....2
+2.......2
+111111111
+rot:up:dirs
+
+cut:dirs
+#036965 blue brown
+copy: con:dirs
+
+vs_snake_under m
+#111018 #6cd9b5
+..000..
+.00000.
+0001000
+0011100
+0001000
+.00000.
+..000..
+translate:down:2
+translate:left:3
+
+vs_active_under:dirs
+#111018 #6cd9b5
+copy: vs_snake_under
+translate:dirs:4
+
+diag s
+black orange
+100100100100
+010010010010
+001001001001
+100100100100
+010010010010
+001001001001
+100100100100
+010010010010
+001001001001
+100100100100
+010010010010
+001001001001
+
+diag2 t
+black orange
+001001001001
+010010010010
+100100100100
+001001001001
+010010010010
+100100100100
+001001001001
+010010010010
+100100100100
+001001001001
+010010010010
+100100100100
+
+x1; red;
+x2 copy:x1; blue;
+x3 copy:x2; green;
+
+// hat tricks #33
+pair:AX
+red red pink black
+..00000..
+..01210..
+..02320..
+..01210..
+..00000..
+.........
+.........
+
+pair:A2 i
+green green green lightgreen
+
+pair:A3 j
+orange lightbrown lightbrown black
+ 
+pair:A4 k
+purple purple blue blue
+
+pair:A5 l
+lightblue pink lightblue black
+
+// build object by combo of tags and mapping #103
+Thing:0:right
+Black Orange White Blue
+...0.
+...1.
+...22
+...3.
+...3.
+
+Thing:0:left
+Black Orange White Blue
+.0...
+.1...
+22...
+.3...
+.3...
+
+Thing:0:up
+Black Orange White Blue
+.000.
+.111.
+.....
+.....
+.....
+
+Thing:0:down
+Black Orange White Blue
+.....
+.....
+.....
+.333.
+.3.3.
+
+Thing:elevation:directions
+black orange white blue
+copy: Thing:prevElevation:directions translate:up:1
+
+// mapping applied to transform numeric #102
+Line:1
+red
+.....
+.....
+.....
+.....
+.000.
+
+Line:X5
+red
+copy: Line:prevX5 translate:up:X5
+
+// mapping applied to #105
+(first copy option does work in ps>, the other 3 don't)
+
+Line2:X5
+black
+copy: Line:1 translate:up:X5
+
+Line3:X5
+blue
+copy: Line:1 translate:up:translation
+
+Line4:X5
+green
+copy: Line:1 translate:otherDirection:1
+
+Line5:X5
+orange
+copy: Line:1 translate:otherDirection:translation
+
+=======
+LEGEND
+=======
+. = Background
+1 = con:up
+2 = con:right
+3 = con:down
+4 = con:left
+5 = cut:up
+6 = cut:right
+7 = cut:down
+8 = cut:left
+n = vs_active_under:down
+h = pair:A1
+
+================
+COLLISIONLAYERS
+================
+Background
+Player
+--
+a,b,c,d,e,f,g
+m,s,t,q
+u:dirs
+w,r,o
+h,i,j,k,l
+x,y,z
+b:t1
+--
+dirs -> con:dirs
+dirs -> cut:dirs
+vs_active_under:dirs
+x1,x2,x3
+Thing:elevation:directions
+Line:X5
+Line2:X5
+Line3:X5
+Line4:X5
+Line5:X5
+
+======
+RULES
+======
+
+right elevation directions [ x | x | no x ] -> [ Thing:elevation:directions | x | x ]
+
+//right [ x | x | x | x | x | x | x | x | x | x | x | x ] -> 
+//[ Thing:0:up | Thing:0:right | Thing:0:down | Thing:0:left | Thing:1:up | Thing:1:right | Thing:1:down | Thing:1:left | Thing:2:up | Thing:2:right | Thing:2:down | Thing:2:left ]
+
+right [ y | y | y | y | y ] -> [ Line2:1 | Line2:2 | Line2:3 | Line2:4 | Line2:5 ]
+right [ z | z | z | z | z ] -> [ Line:1 | Line:2 | Line:3 | Line:4 | Line:5 ]
+right [ y | z | z | z | z ] -> [ Line3:1 | Line3:2 | Line3:3 | Line3:4 | Line3:5 ]
+right [ y | y | z | z | z ] -> [ Line4:1 | Line4:2 | Line4:3 | Line4:4 | Line4:5 ]
+right [ y | y | y | z | z ] -> [ Line5:1 | Line5:2 | Line5:3 | Line5:4 | Line5:5 ]
+
+[ > p | r ] -> [ > p | > r ]
+
+=======
+LEVELS
+=======
+.................
+.p.r.o...........
+.........s..t....
+.................
+.a.b.c.d.e.f.g...
+.................
+.1.2.3.4.5.6.7.8.
+.................
+.h.i.j.k.l.m.n...
+.................
+.xx..............
+.................
+.yyyzz....zzzzz..
+.yzzzz....yyzzz..
+.................
+

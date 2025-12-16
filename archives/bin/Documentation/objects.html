@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" type="image/x-icon" href="ico/favicon.ico" />
+
+    <title>Objects - PuzzleScript Next Documentation</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/bootstrap-theme.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../index.html"><img src="../images/mascot_colorful.png">Puzzlescript Next</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+              <li><a href="../editor.html">Make A Game</a></li>
+              
+              <li class="active"><a href="documentation.html">Documentation</a></li>
+          </ul>          
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="https://discord.gg/3uumegUV7y">Discord</a></li>            
+            <li><a href="https://groups.google.com/g/puzzlescript">Forum</a></li>
+            <li><a href="https://github.com/david-pfx/PuzzleScriptNext">GitHub</a></li>
+            <li><a href="about.html">About</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+
+    <div class="container">
+
+
+
+<p>
+<ol class="breadcrumb">
+  <li><a href="documentation.html">Documentation</a></li>
+  <li>Sections</li>
+  <li class="active">Objects</li>
+</ol>
+<p>
+
+<h1>Sections of a PuzzleScript file</h1>
+<p>
+A puzzlescript file is divided into the following sections. 
+<p>
+
+  <ul class="nav nav-pills">
+    <li><a href="prelude.html">Prelude</a></li>
+    <li class="active"><a href="objects.html">Objects</a></li>
+    <li><a href="legend.html">Legend</a></li>
+    <li><a href="sounds.html">Sounds</a></li>
+    <li><a href="collisionlayers.html">CollisionLayers</a></li>
+    <li><a href="rules.html">Rules</a></li>
+    <li><a href="winconditions.html">WinConditions</a></li>
+    <li><a href="tags.html">Tags</a></li>
+    <li><a href="mappings.html">Mappings</a></li>
+    <li><a href="levels.html">Levels</a></li>
+  </ul>
+
+    <h2>Objects</h2>
+    Here's where your in-game objects are all declared.  The simplest way is to give something a name and a color.
+    <p>
+    <pre><code>OBJECTS
+=======      
+Player P
+Blue</code></pre>
+    If you do this, the player will be a blue square. 
+    <p>
+    You can specify a sprite as a 5x5 grid as follows:
+    <p>    
+    <pre><code>Player P
+PINK YELLOW #000000    
+.222.
+.000.
+22122
+.222.
+.2.2.</code></pre>
+	<p>Which gives you this wee fella: <img src="images/player.png"></p>
+
+  <h3>Object Names</h3>
+  <p>The first line is the name of the object, and aliases too if you like.
+    So the extra <b>P</b> on the line is another name for the Player object (and you can have as many aliases as you like).
+    This is convenient for creating single characters needed for putting objects into a level, but you can get the same result in the Legend section if you prefer.
+
+  <h3>Colors</h3>
+  <p>The second line is a list of colors. 
+	  The available color names are as follows, but the exact shade of color is set according to the <b>palette</b> setting 
+    in the <a href="prelude.html">prelude</a>.</p>
+<blockquote><b><ul class="list-inline"><li>black</li><li>white</li><li>lightgray/grey</li><li>gray/grey</li><li>darkgray/grey</li>
+  </li><li>red</li><li>darkred</li><li>lightred</li><li>brown</li><li>darkbrown</li><li>lightbrown</li><li>orange</li><li>yellow</li>
+  <li>green</li><li>darkgreen</li><li>lightgreen</li><li>blue</li><li>lightblue</li><li>darkblue</li><li>purple</li><li>pink</li>
+  <li>transparent</li></ul></b></blockquote>
+
+  <p>See this <a href="../editor.html?demo=next/color_chart">Color Chart</a> for a display of the colors in the default palette. 
+    You can change the palette if you like.</p>
+
+  <p>Or you can use hex codes if you prefer. 
+    <ul>
+      <li>Three and four digit codes represent regular RGB colors, so <b>#FF00FF</b> is <span style="color:#ff00ff">magenta</span> 
+        and <b>#0FF</b> is <span style="color: #0ff">cyan</span>.</li>
+      <li>Four and eight digit codes represent RGBA colors, so <b>#0000FF80</b> is semi-transparent <span style="color:#0000FF80">blue</span> 
+        and <b>#8888</b> is semi-transparent <span style="color: #8888">grey</span>.</li>
+    </ul></p>
+
+  <h3>The Grid <img src="../images/psplus.png" title="PuzzleScript Plus" height="16"></h3>
+  <p>The third and following lines are rows of numeric digits making up the sprite grid (or they can be omitted, and then you just get a square). 
+    The dots represent transparency, and the numbers 0..9 index the colors in the second line, for as many colors as there are.</p>
+
+    <p>If ten colors really aren't enough, or perhaps you have an automated tool doing subtle shades, then you can use letters for up to another 26 colors. 
+      The letter 'a' or 'A' is color index 10, and so on. 
+    </p>
+
+    <p>In the simple case each line is <b>sprite_size</b> in length and there are <b>sprite_size</b> of them.
+    This defaults to 5x5, but you can set it set to a different value in the <a href="prelude.html">prelude</a>.</p>
+
+  <p>The sprite grid can be smaller or larger, and does not have to be square.
+    It will be rendered with the bottom left-hand corner aligned with the tile. 
+    If it is larger, it will overflow and hide tiles above and to the right.
+    You can use control this, see <a href="collisionlayers.html">CollisionLayers</a>.
+  </p>
+
+  <h3>Transforms <img src="../images/pspatt.png" title="Pattern:Script" height="16"></h3>
+    <p>Following the sprite grid are one or more lines of object transforms.
+      The transforms are executed in order, left to right, and modify the sprite grid as they do so.
+      These are the things you can do.</p>
+    <p>The examples here show absolute directions such as <b>right</b> and <b>down</b>, but you can use the relative directions <b>> < ^ v</b> instead.
+      This becomes important when used in conjunction with <a href="tags.html">tags</a>.</p>
+<dl>
+  <dt>copy:crate</dt>
+  <dd>The sprite grid is replaced by one taken from another object, in this case the crate object.
+    Note: 
+    <li>If the object does not exist, the default square blob is used instead.</li>
+    <li>The <b>copy:</b> transform can be written on the first line, for compatibility. 
+    This usage is deprecated.</li>
+  </dd>
+
+  <dt>flip:right</dt>
+  <dd>Flips the grid as if reflected in a vertical mirror, left <-> right. 
+    As expected, <b>down</b> mirrors the grid horizontally, up <-> down.
+    <p>
+    The shorthands <b>-</b> and <b>|</b> do the same, horizontal = down, and vertical = right. 
+  </dd>
+
+  <dt>shift:down:3</dt>
+  <dd>Shifts the pixels of the grid down 3, in a circular fashion. 
+    Pixels falling off the bottom reappear at the top.
+    You can use negative numbers too.
+  </dd>
+
+  <dt>rot:up:right</dt>
+  <dd>Rotates the grid so that what was <b>up</b> is now <b>right</b>.
+    In this case, that would be a 90 degree rotation.
+  </dd>
+
+  <dt>translate:right:5</dt>
+  <dd>Moves the grid across 5 pixels to the right.
+    You can use negative numbers too.
+  </dd>
+</dl>
+
+<h3>Text Sprites  <img src="../images/psnext.png" alt="PuzzleScript Next" height="16"></h3>
+
+<p>Instead of a sprite matrix, you can create an object that displays as a string of text.
+  You can see it working in <a href="../editor.html?demo=next/333">333</a>.
+  Use it like this. 
+</p>
+<pre><code>s; purple; text: S
+t; orange; text: tea for two
+3; pink; text: 3
+4; pink; text: 4
+number8 scale: 0.5; green; text: 8
+</code></pre>
+    
+<p>These are the things you can do.</p>
+
+<dl>
+  <dt>text: tea for two</dt>
+  <dd>The string of characters is trimmed and centred to fit in the cell. 
+    Text objects use the custom font, or Monospace fallback, rather than the built-in font.
+  </dd>
+  <dt>scale: 0.8</dt>
+  <dd>The text is scaled, relative to 1.0. </dd>
+</dl>
+
+<h3>Canvas Sprites  <img src="../images/psnext.png" alt="PuzzleScript Next" height="16"></h3>
+
+<p>For advanced users, a canvas sprite lets you draw just about anything. 
+  A canvas sprite consists of a sequence of instructions expressed as JSON, which can be vector drawing, text or symbols, shading and so on.
+  You can see it working in <a href="../editor.html?demo=other/wriggle">Wriggle</a>.
+    
+<p>A canvas sprite is defined by adding <code>canvas:w,h</code> to the first line after any objects and aliases. 
+The width and height are optional, and default to 1.
+Here is an example of an object that is a grey blob.</p>
+
+<pre><code><span class="hljs-comment">// this is a grey blob</span>
+blob <span class="hljs-selector-tag">b</span> <span class="hljs-selector-tag">canvas</span>:<span class="hljs-number">2</span>,<span class="hljs-number">1</span>
+{<span class="hljs-string">"beginPath"</span>:[]}{<span class="hljs-string">"fillStyle"</span>:<span class="hljs-string">"#C0C0C0"</span>}
+{<span class="hljs-string">"arc"</span>:[<span class="hljs-number">1.5</span>,<span class="hljs-number">0.5</span>,<span class="hljs-number">0.4</span>,<span class="hljs-number">0</span>,<span class="hljs-number">6.28</span>]}
+{<span class="hljs-string">"fill"</span>:[]}
+</code></pre><p>
+
+  <p>This should be followed by lines of JSON objects, each with one name and one value. 
+    The name should be one of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D">CanvasRenderingContext2D</a> 
+    properties or functions. 
+    If the name is a function it is invoked with the value, which is a (possibly empty) array containing the function arguments.
+    Otherwise it is a property, and the value is assigned to that property. </p>
+    
+Alternatively the name may be <code>!include</code> in which case the argument is the name of another <code>canvas</code> object, and the JSON for that object is included.
+<pre><code><span class="hljs-comment">// this canvas object includes another</span>
+{"!include":"man"}
+{"beginPath":[]}
+{"fillStyle":"white"}
+{"arc":[0.5,0.5,0.1,0,7]}
+{"fill":[]}
+</code></pre><p>
+
+  <p>Objects are scaled so that a size of 1.0 is one cell (or as defined by <code>w</code> and <code>h</code>).
+    Angles are in radians.</p>
+<p>The object transforms <code>copy:</code>, <code>translate</code>, <code>rot:</code> and <code>flip:</code> behave as expected, with distances defined in sprite pixels.
+The <code>shift:</code> transform is not implemented.</p>
+<p>The test program is <code>test/test_min_canvas</code>.</p>
+<p>Notes.</p>
+<ol>
+<li><p>The canvas API uses named colours which are quite different from any of the PS pixel colours (eg <code>&quot;red&quot;</code> is not the same <code>red</code>).
+If you really need them to be the same, use hex format colours (e.g. <code>#FFA500</code>) which should always match.</p>
+</li>
+<li><p>Canvas size units are grid cells and drawing instructions have their origin at top-left. So <code>canvas:2,3</code> allows a sprite to be 6 grid cells, and <code>{&quot;rect&quot;:[0.01,0.01,1.98,1.98]}</code> will draw a rectange just less than 2x2, relative to the top left corner.
+However, like pixel sprites the drawing is aligned with the bottom left corner, so that over-sized sprites extend up and right.</p>
+</li>
+<li><p>All transforms use the <code>sprite_size</code> as the unit of measure, so <code>translate:right:1</code> means 1 pixel to the right. 
+Use a larger <code>sprite_size</code> to achieve more fine-grained positioning.</p>
+</li>
+<li><p>Canvas sprites rotate around the centre of their canvas and are not realigned on the grid, while pixel sprites are realigned on the grid after rotation, anchored to the bottom-left corner. Use square canvas and sprite to minimise alignment issues. </p>
+</li>
+<li><p>Watch out for applying transforms to <code>copy:</code> objects that already have transforms applied.
+Likewise, applying multiple transforms to a single canvas sprite may not yield the same expected result as the same list applied to a pixel sprite.
+Probably best to define a collection of transform-free base sprites and only apply transforms on the copies, but if in doubt, try it!</p>
+</li>
+<li><p>All objects must be included in a collision layer, even partially-defined objects you only <code>&quot;!include&quot;</code> into later objects.
+Since these are never displayed, you can add all your include-only objects to the first (<code>Background</code>) layer. </p>
+</li>
+<li><p>The Level Editor sprite pick-list currently displays canvas sprites without their transforms, so it can be hard to pick the right one.
+If you give sprites meaningful names and hover over a sprite to check its name before you click on it, this should help.</p>
+</li>
+<li><p>JSON syntax error detection and reporting is very limited. 
+If you see a magenta square, your JSON is badly formed, but often there is nothing to see except it doesn&#39;t work. 
+Ask for help or look for existing examples. </p>
+</li>
+</ol>
+
+
+    </div><!-- /.container -->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>

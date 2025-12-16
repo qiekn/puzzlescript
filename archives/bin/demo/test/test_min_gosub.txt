@@ -1,0 +1,110 @@
+title test min gosub
+author polyomino
+homepage www.polyomino.com
+
+// testing gosubs
+
+skip_title_screen
+//run_rules_on_level_start
+verbose_logging
+debug
+debug_switch rules,gosub
+          
+========
+OBJECTS
+========
+Background;grey
+PLAYER P;white
+R;RED
+B;BLUE
+g;green
+y;yellow
+k;pink
+
+=======
+LEGEND
+=======
+. = Background
+a = b and k
+o = b or g
+ork = r or k
+rgb = r or g or b
+gbr = g or b or r
+
+=======
+SOUNDS
+=======
+================
+COLLISIONLAYERS
+================
+Background
+y
+Player, R, B, G
+k
+======
+RULES
+======
+
+[ > p | r ] -> [ > p | > r ]
+[ right p ][ g ] -> gosub add green
+[ action p ] -> gosub sub1
+late [ ] -> gosub sub1 late
+[ up p] -> gosub sub2
+[] -> log startloop
+
+// bug: does not loop after gosub
+startloop
+    //right [ left p ][ g | g | no g ] -> [ left p ][ g | action g | no g ]
+    //right [ left p ][ g | action g ] -> [ left p ][ g | no g ]
+    [ left p ][ g ] -> gosub del green
+endloop
+
+subroutine never call this
+    [] -> log subroutine never call this
+    right [ ] -> [ k ]
+
+subroutine add green
+    [] -> log add green
+    right [ g | no g ] -> [ action g | ]
+    right [ action g | no g ] -> [ g | g ]
+
+subroutine del green
+    [] -> log del green
+    right [ g | g | no g ] -> [ g | action g | no g ]
+    right [ g | action g ] -> [ g | no g ]
+
+subroutine sub1
+    [] -> log sub1
+
+subroutine sub1 late
+    late [] -> log sub1
+
+subroutine sub2
+    [] -> log sub2
+    [up p] -> gosub sub3
+    // #147 gosub is last
+
+subroutine sub3
+    [] -> log sub3
+
+==============
+WINCONDITIONS
+==============
+all r on y
+
+=======
+LEVELS
+=======
+
+//message first level
+
+...g......
+....p.r.y.
+...b......
+
+message second level
+
+..........
+....pry...
+..........
+

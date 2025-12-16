@@ -1,0 +1,90 @@
+title test min pixels
+author polyomino
+homepage www.polyomino.com
+
+// test program for pixel sizing
+
+level_select
+
+verbose_logging
+debug
+========
+OBJECTS
+========
+Background
+grey darkgray lightgray
+22221
+20001
+20001
+20001
+11111
+
+Player p
+black orange white blue
+.000.
+.111.
+22222
+.333.
+.3.3.
+
+R;RED
+B;BLUE
+g;green
+y;yellow
+k;pink
+
+=======
+LEGEND
+=======
+. = Background
+a = b and k
+o = b or g
+ork = r or k
+rgb = r or g or b
+gbr = g or b or r
+
+=======
+SOUNDS
+=======
+================
+COLLISIONLAYERS
+================
+Background
+y
+Player, R, B, G
+k
+======
+RULES
+======
+
+[ > p | r ] -> [ > p | > r ]
+
+==============
+WINCONDITIONS
+==============
+all r on y
+
+=======
+LEVELS
+=======
+
+section low height
+
+...g......
+....p.r.y.
+...b......
+
+section low width
+
+...
+...
+...
+...
+...
+pry
+...
+...
+...
+...
+...
+

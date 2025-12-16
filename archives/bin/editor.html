@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="PuzzleScript Next game editor">
+
+    <title>PuzzleScript Next</title>
+    <link rel="stylesheet" href="css/docs.css">
+    <link rel="stylesheet" href="css/codemirror.css">
+    <link rel="stylesheet" href="css/midnight.css">
+    <link rel="stylesheet" href="css/dialog.css">
+    <link rel="stylesheet" href="css/console.css">
+    <link rel="stylesheet" href="css/gamecanvas.css">
+    <link rel="stylesheet" href="css/soundbar.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/toolbar.css">
+    <link rel="stylesheet" href="css/show-hint.css">
+
+    <link rel="stylesheet" href="css/combined.css">
+    <link rel="shortcut icon" type="image/x-icon" href="Documentation/ico/favicon.ico">
+  </head>
+  <body>
+    <div id="leftpanel">
+      <form id="form1" name="form1" action="javascript:void(0);">
+        <textarea id="code" class="codeform" name="code" rows="20" cols="20" style="display: none">
+( starter script goes here )			
+		</textarea>
+      </form>
+    </div>
+    <div id="verticaldragbar"></div>
+
+    <div id="uppertoolbar">
+      &nbsp;&nbsp;&nbsp;<a href="index.html"><h2>PuzzleScript Next</h2></a> -
+      <a id="saveClickLink" href="javascript:void(0);">SAVE</a> -
+
+      <form action="" style="display: inline">
+        <select id="loadDropDown" name="default" style="display: inline; width: 100px">
+          -
+        </select>
+      </form>
+      -
+      <form action="" style="display: inline">
+        <select id="exampleDropdown" name="default" style="display: inline; width: 150px">
+          <option value="load" selected="selected">Load Examples</option>
+          <optgroup label="Puzzlescript Next">
+            <option value="next/yasban">Yet Another Sokoban</option>
+            <option value="next/333">Threes</option>
+            <option value="next/2048">2048</option>
+            <option value="next/bridges">Bridges</option>
+            <option value="next/netgame">Net game</option>
+            <option value="next/fifteen">Fifteen</option>
+            <option value="other/abracadabra">Abracadabra</option>
+            <option value="other/wriggle">Wriggle</option>
+            <option value="next/colour_chart">Colour chart</option>
+            <option value="next/starter">Starter</option>
+            <option value="blank">Blank Project</option>
+          </optgroup>
+
+          <optgroup label="Puzzlescript">
+            <option value="sokoban_basic">Basic Sokoban</option>
+            <option value="whaleworld">Whale World</option>
+            <option value="zenpuzzlegarden">Zen Puzzle Garden</option>
+            <option value="microban">Microban</option>
+          </optgroup>
+
+          <optgroup label="Puzzlescript Plus">
+            <option value="plus/enigmash">Enigmmash</option>
+            <option value="plus/gridblocked">Gridblocked</option>
+            <option value="plus/kye">Kye</option>
+            <option value="plus/magiciban_v1">Magiciban v1</option>
+            <option value="plus/selenes_labyrinth">Selene's Labyrinth</option>
+          </optgroup>
+
+          <optgroup label="Pattern:Script">
+            <option value="patt/tubetransport">Tube Transport</option>
+            <option value="patt/tapaban">Tapaban</option>
+          </optgroup>
+        </select>
+      </form>
+      -
+      <a id="runClickLink" title="Compiles and runs the current game in the editor pane (keyboard shortcut: ⌘/Ctrl+Shift+Enter)" href="javascript:void('Run the Game');">RUN</a>
+      -
+      <a title="Rebuilds the program live (keyboard shortcut: ⌘/Ctrl+Enter)" id="rebuildClickLink" href="javascript:void('Rebuild without restarting');">REBUILD</a>
+      -
+      <a id="levelEditorClickLink" title="Toggle the level editor (keyboard shortcut: E)" href="javascript:void('Open Level Editor');">LEVEL EDITOR</a>
+      -
+      <a id="exportClickLink" title="Export a standalone HTML Build of your game" href="javascript:void('Export Standalone HTML Build');">EXPORT</a>
+      -
+      <a id="shareClickLink" title="Generate a shareable link to a playable copy of your game" href="javascript:void('Generate Link To Game');">SHARE</a>
+      -
+      <a href="Documentation/documentation.html" title="How Puzzlescript Works" target="Puzzle_Script_Documentation">DOCS</a>
+      -
+      <a id="solveClickLink" title="Solve a level" href="javascript:void('Solve a Level');">SOLVE</a>
+      -
+      <a id="cancelClickLink" hidden="true" href="javascript:void('Cancel solver');">STOP SOLVER</a>
+      <span id="solvingProgress" style="color: white"></span>
+    </div>
+
+    <div id="righttophalf">
+      <div class="upperarea">
+        <canvas id="gameCanvas"></canvas>
+      </div>
+    </div>
+    <div id="horizontaldragbar"></div>
+    <div id="rightbottomhalf">
+      <div class="lowertoolbar">
+        <div id="soundbar">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="soundbutton"><a id="clearConsoleClick" title="clear the console" href="javascript:void('Clear Console');"><img class="toolbaricon" width="24" height="24" src="images/close-window.png" alt="clear console contents"></a></span>
+          &nbsp;&nbsp;&nbsp;
+          <span class="soundbutton"><a id="verboseLoggingClick" title="toggle verbose logging" href="javascript:void('Verbose Logging');"><img src="images/megaphone.png" width="24px" height="24px" alt="toggle verbose logging"></a></span>
+          &nbsp;&nbsp;&nbsp;
+          <span class="soundbutton"><a id="debugLoggingClick" title="toggle compiler debug mode and rebuild" href="javascript:void('Debug Logging');"><img src="images/doc.png" width="24px" height="24px" alt="toggle debug logging and rebuild"></a></span>
+          &nbsp;&nbsp;&nbsp;
+          <span class="soundbutton"><a id="showLayersClick" title="toggle show layers" href="javascript:void('Show Layers');"><img src="images/layers.png" width="24px" height="24px" alt="toggle show layers"></a></span>
+          &nbsp;&nbsp;&nbsp;
+          <span class="soundbutton"><a id="runProgramClick" title="run program" href="javascript:void('Run Program');"><img src="images/run.png" width="24px" height="24px" alt="run program"></a></span>
+          &nbsp;&nbsp;&nbsp;
+          <span class="soundbutton"><a id="makeGifClick" title="make GIF" href="javascript:void('Make GIF');">
+              <img src="images/gif.png" width="24px" height="24px" alt="make GIF"></a></span>
+          &nbsp;&nbsp;&nbsp;
+          <span class="soundbutton"><a id="gotoLevelAllClick" title="make level all objects" href="javascript:void('Make Level All');">
+              <img src="images/checkerboard.png" width="24px" height="24px" alt="make level all"></a></span>
+          &nbsp;&nbsp;&nbsp;
+          <span class="soundbutton"><a id="newsound0" title="collect item sound" href="javascript:void('Generate Collect Item Sound');"><img width="24" height="24" src="images/audio1.gif" alt="collect item sound"></a></span>
+          <span class="soundbutton"><a id="newsound7" title="push sounds" href="javascript:void('Generate Push Sound');"><img width="24" height="24" src="images/audio2.gif" alt="push sounds"></a></span>
+          <span class="soundbutton"><a id="newsound2" title="explosion sound" href="javascript:void('Generate Explosion Sound');"><img width="24" height="24" src="images/audio3.gif" alt="explosion sound"></a></span>
+          <span class="soundbutton"><a id="newsound3" title="powerup sound" href="javascript:void('Generate Power-Up Sound');"><img width="24" height="24" src="images/audio4.gif" alt="powerup sound"></a></span>
+          <span class="soundbutton"><a id="newsound9" title="bird tweet sound" href="javascript:void('Generate Bird Tweet Sound');"><img width="24" height="24" src="images/audio5.gif" alt="bird tweet sound"></a></span>
+          <span class="soundbutton"><a id="newsound4" title="hurt sound" href="javascript:void('Generate Hurt Sound');"><img width="24" height="24" src="images/audio6.gif" alt="hurt sound"></a></span>
+          <span class="soundbutton"><a id="newsound5" title="jump sound" href="javascript:void('Generate Jump Sound');"><img width="24" height="24" src="images/audio7.gif" alt="jump sound"></a></span>
+          <span class="soundbutton"><a id="newsound1" title="pew pew sound" href="javascript:void('Generate Pew Pew Sound');"><img width="24" height="24" src="images/audio8.gif" alt="pew pew pew"></a></span>
+          <span class="soundbutton"><a id="newsound6" title="selection sound" href="javascript:void('Generate Selection Sound');"><img width="24" height="24" src="images/audio9.gif" alt="selection sound"></a></span>
+          <span class="soundbutton"><a id="newsound8" title="random sound" href="javascript:void('Generate Random Sound');"><img width="24" height="24" src="images/audio10.gif" alt="random sound"></a></span>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <span id="debug" style="display: inline; width: 150px; color: white">
+          </span>
+        </div>
+      </div>
+      <div class="lowerarea" id="lowerarea">
+        <div id="consoletextarea">
+          ======================================<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PuzzleScript Next Console<br>
+          &nbsp;&nbsp;&nbsp;build 1819, 16-dec-2025<br>
+          <br>Thank you for using PuzzleScript Next!<br>
+          <br>Please see the
+          <a href="https://github.com/david-pfx/PuzzleScriptNext" target="_blank">README</a>
+          for more<br>information about this release.<br>
+          ======================================<br>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/scripts_compiled.js"></script>
+    
+    
+
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    <!---->
+  </body>
+</html>

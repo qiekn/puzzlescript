@@ -1,0 +1,255 @@
+title test min sprite size
+author polyomino
+homepage www.polyomino.com
+
+// demo program showing that sprites can be any length or width
+// sprites not matching defined sprite size are aligned ???
+
+verbose_logging
+debug
+
+// comment out next line to see sprite scaling to fit the cell (usually not useful)
+sprite_size 7
+
+========
+OBJECTS
+========
+//Background;grey
+
+Background
+grey darkgray lightgray
+2222221
+2000001
+2000001
+2000001
+2000001
+2000001
+1111111
+Player p
+black orange white blue
+.000.
+.111.
+22222
+.333.
+.3.3.
+
+R;RED
+B;BLUE
+g;green
+y;yellow
+k;pink
+
+s;black red
+01
+10
+
+t;black red blue
+012
+201
+120
+
+u;black red blue green
+0123
+3012
+2301
+1230
+
+w;black red blue green yellow 
+01234
+40123
+34012
+23401
+12340
+
+x;black red blue green yellow white
+012345
+501234
+450123
+345012
+234501
+123450
+
+q;black red blue green yellow white orange
+0123456
+6012345
+5601234
+4560123
+3456012
+2345601
+1234560
+
+z;black red blue green yellow white orange purple
+01234567
+70123456
+67012345
+56701234
+45670123
+34567012
+23456701
+
+9;white red blue 
+1111111111
+1222222221
+1200000021
+1200000021
+1200000021
+1200000021
+1200000021
+1200000021
+1222222221
+1111111111
+
+0;white red blue 
+111111111111
+122222222221
+120000000021
+120000000021
+120000000021
+120000000021
+120000000021
+120000000021
+120000000021
+120000000021
+122222222221
+111111111111
+
+1;white red blue 
+11111111111111
+12222222222221
+12000000000021
+12000000000021
+12000000000021
+12000000000021
+12000000000021
+12000000000021
+12000000000021
+12000000000021
+12000000000021
+12000000000021
+12222222222221
+11111111111111
+
+m;black red blue green yellow 
+01234
+40123
+34012
+23401
+
+n;black red blue green yellow
+01234
+40123
+34012
+
+l;black red blue green yellow
+01234
+40123
+
+c;black red blue green yellow 
+0123
+4012
+3401
+2340
+
+d;black red blue green yellow 
+012
+401
+340
+234
+
+e;black red blue green yellow 
+01
+40
+34
+23
+
+// 36 colours
+f;black white black white black white black white black white   red blue green yellow orange red blue green yellow orange red blue green yellow orange red blue green yellow orange red blue green yellow orange white
+012345
+6789ab
+cdefgh
+ijklmn
+opqrst
+uvwxyz
+
+h;#000 #111 #222 #333 #444 #555 #666 #777 #888 #999 #aaa #bbb #ccc #ddd #eee #fff #fff #fff #000 #001 #002 #003 #004 #005 #006 #007 #008 #009 #00a #00b #00c #00d #00e #00f #00f #00f
+012345
+6789ab
+cdefgh
+ijklmn
+opqrst
+uvwxyz
+
+i;#ff0 #ff1 #ff2 #ff3 #ff4 #ff5 #ff6 #ff7 #ff8 #ff9 #ffa #ffb #ffc #ffd #ffe #fff #fff #fff #f00 #f01 #f02 #f03 #f04 #f05 #f06 #f07 #f08 #f09 #f0a #f0b #f0c #f0d #f0e #f0f #f0f #f0f
+012345
+6789ab
+cdefgh
+ijklmn
+opqrst
+uvwxyz
+
+j;red
+00
+00
+00
+00
+00
+00
+00
+00
+00
+
+o;red
+000000000
+000000000
+
+=======
+LEGEND
+=======
+. = Background
+
+=======
+SOUNDS
+=======
+================
+COLLISIONLAYERS
+================
+Background
+y
+Player, R, B, G
+k
+--
+c,d,e,f,h,i,j,m,n,o,q,s,t,u,w,x,z,l,0,1,9
+
+======
+RULES
+======
+
+[ > p | r ] -> [ > p | > r ]
+
+==============
+WINCONDITIONS
+==============
+all r on y
+
+=======
+LEVELS
+=======
+
+//message first level
+
+.............
+.rbgykprbgyk.
+.............
+.s.u.x.m.n.i.
+..t.w.m.l.q..
+.c.d.e.z.f.h.
+.............
+..j.o.9.0.1..
+.............
+
+message second level
+
+..........
+....pry...
+..........
+

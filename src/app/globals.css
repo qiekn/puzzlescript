@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  canvas {
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply bg-puzzlescript-panel border border-puzzlescript-accent;
+  }
+
+  .toolbar-button {
+    @apply px-3 py-1 bg-puzzlescript-accent hover:bg-puzzlescript-highlight transition-colors cursor-pointer text-sm;
+  }
+
+  .split-pane {
+    @apply flex h-full overflow-hidden;
+  }
+
+  /* Custom scrollbar styles */
+  textarea::-webkit-scrollbar,
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  textarea::-webkit-scrollbar-track,
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #16213e;
+  }
+
+  textarea::-webkit-scrollbar-thumb,
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #0f3460;
+    border-radius: 6px;
+    border: 2px solid #16213e;
+  }
+
+  textarea::-webkit-scrollbar-thumb:hover,
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #e94560;
+  }
+
+  textarea::-webkit-scrollbar-corner,
+  .custom-scrollbar::-webkit-scrollbar-corner {
+    background: #16213e;
+  }
+}

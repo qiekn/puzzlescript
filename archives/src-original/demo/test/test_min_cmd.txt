@@ -1,0 +1,179 @@
+title test min
+author polyomino
+homepage www.polyomino.com
+
+// minimal program for testing commands
+runtime_metadata_twiddling
+continue_is_level_select
+mouse_left w
+level_select
+//enable_pause
+
+verbose_logging
+debug
+debug_switch undo
+
+========
+OBJECTS
+========
+Background
+grey darkgray lightgray
+22221
+20001
+20001
+20001
+11111
+
+Player p
+black orange white blue
+.000.
+.111.
+22222
+.333.
+.3.3.
+
+R;RED
+B;BLUE
+g;green
+W;white
+y;yellow
+k;pink
+q; darkblue; text: quit
+u; darkblue; text: undo
+x; darkblue; text: win
+z; darkblue; text: restart
+
+=======
+LEGEND
+=======
+. = Background
+a = b and k
+o = b or g
+ork = r or k
+rgb = r or g or b
+gbr = g or b or r
+
+=======
+SOUNDS
+=======
+================
+COLLISIONLAYERS
+================
+Background
+w
+y
+k
+Player, R, B, G
+q, u, x, z
+======
+RULES
+======
+
+[ > p | rgb ] -> [ > p | > rgb ]
+[ > p | r ] -> [ > p | > r ]
+[ > p | g ] -> Background_color green
+[ > p | b ] -> Background_color blue
+late [ p k ] -> checkpoint message Checkpoint!
+late [ p | r ] -> log P is next to r
+late [ p | y ] -> log P is next to y
+late [ p | g ] -> log P is next to g
+late [ p | k ] -> log P is next to k
+[ action p ] -> win
+[ w q ] -> quit
+[ w u ] -> undo
+[ w x ] -> win
+[ w z ] -> restart
+[ w ] -> []
+==============
+WINCONDITIONS
+==============
+all r on y
+
+=======
+LEVELS
+=======
+
+section S1
+
+message first level\n\ntriggers a bug?
+
+...g......
+....p.r.y.
+...b...k..
+..........
+..........
+...quxz....
+
+message second level
+
+....k.....
+....pry...
+..........
+..quxz....
+
+section S2
+
+......
+.pww..
+......
+.quxz.
+
+
+section S3
+
+...w.
+.p.w.
+...w.
+.quxz
+
+section S4
+
+...w.
+.p.w.
+...w.
+...w.
+.quxz
+
+section S5
+
+level 40x40 to trigger diff undo twiddle bug
+rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r..................p...................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+r......................................r
+rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr

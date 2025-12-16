@@ -1,0 +1,69 @@
+title test min unicode
+author polyomino
+homepage www.polyomino.com
+
+// throwaway test program for Unicode object name
+
+verbose_logging
+debug
+========
+OBJECTS
+========
+Background;grey
+PLAYER P;white
+R;RED
+B;BLUE
+g;green
+y;yellow
+k;pink
+大
+red
+
+=======
+LEGEND
+=======
+. = Background
+a = b and k
+o = b or g
+ork = r or k
+rgb = r or g or b
+gbr = g or b or r
+
+=======
+SOUNDS
+=======
+================
+COLLISIONLAYERS
+================
+Background
+y
+Player, R, B, G
+k
+大
+======
+RULES
+======
+
+[ > p | r ] -> [ > p | > r ]
+
+==============
+WINCONDITIONS
+==============
+all r on y
+
+=======
+LEVELS
+=======
+
+//message first level
+
+...g....大.
+....p.r.y.
+...b......
+
+message second level
+
+..........
+....pry...
+..........
+
