@@ -34,7 +34,7 @@ export default function Toolbar({ onAction, onOpenThemeEditor }) {
         className="text-lg font-bold hover:opacity-80 transition-opacity"
         style={{ color: "var(--color-text)" }}
       >
-        PuzzleScript Next
+        PuzzleScript React
       </Link>
 
       {/* Settings Group */}
