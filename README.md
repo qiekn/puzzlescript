@@ -1,9 +1,6 @@
-# PuzzleScript
+# PuzzleScript Note
 
-Open Source HTML5 Puzzle Game Engine
+PuzzleScript is an Open Source HTML5 Puzzle Game Engine
 
-Try it out at https://www.puzzlescript.net.
-
----
-
-If you're interested in recompiling/modifing/hacking the engine, there is [development setup info here](DEVELOPMENT.md). If you're just interested in learning how to use the engine/make games in it, [the documentation is here](https://www.puzzlescript.net/Documentation/documentation.html).
+I'm Reading [increpare/PuzzleScript #eba3531](https://github.com/increpare/PuzzleScript/commit/eba3531dfc93bd2fb9b3dbd40831a80919170a5a)'s
+source code, taking notes and adding more code comments
