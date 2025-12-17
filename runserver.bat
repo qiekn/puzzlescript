@@ -1,2 +1,2 @@
- ipconfig
- python -m http.server
+@echo off
+python -m http.server
