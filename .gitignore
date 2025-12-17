@@ -1,0 +1,7 @@
+bin/
+**/.DS_Store
+
+*.swp
+src - Kopie
+
+node_modules/
