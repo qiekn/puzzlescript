@@ -4,9 +4,12 @@ import { useEffect, useRef } from "react";
 
 export default function GameCanvas({ onCanvasReady }) {
   const canvasRef = useRef(null);
+  const initializedRef = useRef(false);
 
   useEffect(() => {
-    if (canvasRef.current && onCanvasReady) {
+    // Only call onCanvasReady once when canvas is first available
+    if (canvasRef.current && onCanvasReady && !initializedRef.current) {
+      initializedRef.current = true;
       onCanvasReady(canvasRef.current);
     }
   }, [onCanvasReady]);
@@ -19,9 +22,6 @@ export default function GameCanvas({ onCanvasReady }) {
         className="max-w-full max-h-full"
         style={{
           imageRendering: "pixelated",
-          imageRendering: "-moz-crisp-edges",
-          imageRendering: "-webkit-crisp-edges",
-          imageRendering: "crisp-edges",
         }}
       />
     </div>
