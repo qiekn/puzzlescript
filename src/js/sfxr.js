@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 const SOUND_VOL = 0.25;
 const SAMPLE_RATE = 5512;
@@ -11,24 +11,21 @@ const NOISE = 3;
 const TRIANGLE = 4;
 const BREAKER = 5;
 
-const SHAPES = [
-  'square', 'sawtooth', 'sine', 'noise', 'triangle', 'breaker'
-];
+const SHAPES = ["square", "sawtooth", "sine", "noise", "triangle", "breaker"];
 
 let AUDIO_CONTEXT;
 
-function checkAudioContextExists(){
-  try{
-    if (AUDIO_CONTEXT==null){
-      if (typeof AudioContext != 'undefined') {
+function checkAudioContextExists() {
+  try {
+    if (AUDIO_CONTEXT == null) {
+      if (typeof AudioContext != "undefined") {
         AUDIO_CONTEXT = new AudioContext();
-      } else if (typeof webkitAudioContext != 'undefined') {
+      } else if (typeof webkitAudioContext != "undefined") {
         AUDIO_CONTEXT = new webkitAudioContext();
       }
     }
-  }
-  catch (ex){
-    window.console.log(ex)
+  } catch (ex) {
+    window.console.log(ex);
   }
 }
 
@@ -39,47 +36,47 @@ let masterVolume = 1.0;
 
 // Sound generation parameters are on [0,1] unless noted SIGNED, & thus [-1,1]
 function Params() {
-  const result={};
+  const result = {};
   // Wave shape
   result.wave_type = SQUARE;
 
   // Envelope
-  result.p_env_attack = 0.0;   // Attack time
-  result.p_env_sustain = 0.3;  // Sustain time
-  result.p_env_punch = 0.0;    // Sustain punch
-  result.p_env_decay = 0.4;    // Decay time
+  result.p_env_attack = 0.0; // Attack time
+  result.p_env_sustain = 0.3; // Sustain time
+  result.p_env_punch = 0.0; // Sustain punch
+  result.p_env_decay = 0.4; // Decay time
 
   // Tone
-  result.p_base_freq = 0.3;    // Start frequency
-  result.p_freq_limit = 0.0;   // Min frequency cutoff
-  result.p_freq_ramp = 0.0;    // Slide (SIGNED)
-  result.p_freq_dramp = 0.0;   // Delta slide (SIGNED)
+  result.p_base_freq = 0.3; // Start frequency
+  result.p_freq_limit = 0.0; // Min frequency cutoff
+  result.p_freq_ramp = 0.0; // Slide (SIGNED)
+  result.p_freq_dramp = 0.0; // Delta slide (SIGNED)
   // Vibrato
   result.p_vib_strength = 0.0; // Vibrato depth
-  result.p_vib_speed = 0.0;    // Vibrato speed
+  result.p_vib_speed = 0.0; // Vibrato speed
 
   // Tonal change
-  result.p_arp_mod = 0.0;      // Change amount (SIGNED)
-  result.p_arp_speed = 0.0;    // Change speed
+  result.p_arp_mod = 0.0; // Change amount (SIGNED)
+  result.p_arp_speed = 0.0; // Change speed
 
   // Duty (wat's that?)
-  result.p_duty = 0.0;         // Square duty
-  result.p_duty_ramp = 0.0;    // Duty sweep (SIGNED)
+  result.p_duty = 0.0; // Square duty
+  result.p_duty_ramp = 0.0; // Duty sweep (SIGNED)
 
   // Repeat
   result.p_repeat_speed = 0.0; // Repeat speed
 
   // Phaser
-  result.p_pha_offset = 0.0;   // Phaser offset (SIGNED)
-  result.p_pha_ramp = 0.0;     // Phaser sweep (SIGNED)
+  result.p_pha_offset = 0.0; // Phaser offset (SIGNED)
+  result.p_pha_ramp = 0.0; // Phaser sweep (SIGNED)
 
   // Low-pass filter
-  result.p_lpf_freq = 1.0;     // Low-pass filter cutoff
-  result.p_lpf_ramp = 0.0;     // Low-pass filter cutoff sweep (SIGNED)
-  result.p_lpf_resonance = 0.0;// Low-pass filter resonance
+  result.p_lpf_freq = 1.0; // Low-pass filter cutoff
+  result.p_lpf_ramp = 0.0; // Low-pass filter cutoff sweep (SIGNED)
+  result.p_lpf_resonance = 0.0; // Low-pass filter resonance
   // High-pass filter
-  result.p_hpf_freq = 0.0;     // High-pass filter cutoff
-  result.p_hpf_ramp = 0.0;     // High-pass filter cutoff sweep (SIGNED)
+  result.p_hpf_freq = 0.0; // High-pass filter cutoff
+  result.p_hpf_ramp = 0.0; // High-pass filter cutoff sweep (SIGNED)
 
   // Sample parameters
   result.sound_vol = 0.5;
@@ -98,18 +95,16 @@ function frnd(range) {
   }
 }
 
-
 function rnd(max) {
   if (seeded) {
-  return Math.floor(rng.uniform() * (max + 1));
+    return Math.floor(rng.uniform() * (max + 1));
   } else {
     return Math.floor(Math.random() * (max + 1));
   }
 }
 
-
 function pickupCoin() {
-  const result=Params();
+  const result = Params();
   result.wave_type = Math.floor(frnd(SHAPES.length));
   if (result.wave_type === 3) {
     result.wave_type = 0;
@@ -123,17 +118,15 @@ function pickupCoin() {
     result.p_arp_speed = 0.5 + frnd(0.2);
     let num = (frnd(7) | 1) + 1;
     let den = num + (frnd(7) | 1) + 2;
-    result.p_arp_mod = (+num) / (+den); //0.2 + frnd(0.4);
+    result.p_arp_mod = +num / +den; //0.2 + frnd(0.4);
   }
   return result;
-};
-
+}
 
 function laserShoot() {
-  const result=Params();
+  const result = Params();
   result.wave_type = rnd(2);
-  if (result.wave_type === SINE && rnd(1))
-    result.wave_type = rnd(1);
+  if (result.wave_type === SINE && rnd(1)) result.wave_type = rnd(1);
   result.wave_type = Math.floor(frnd(SHAPES.length));
 
   if (result.wave_type === 3) {
@@ -144,40 +137,33 @@ function laserShoot() {
   result.p_freq_limit = result.p_base_freq - 0.2 - frnd(0.6);
   if (result.p_freq_limit < 0.2) result.p_freq_limit = 0.2;
   result.p_freq_ramp = -0.15 - frnd(0.2);
-  if (rnd(2) === 0)
-  {
+  if (rnd(2) === 0) {
     result.p_base_freq = 0.3 + frnd(0.6);
     result.p_freq_limit = frnd(0.1);
     result.p_freq_ramp = -0.35 - frnd(0.3);
   }
-  if (rnd(1))
-  {
+  if (rnd(1)) {
     result.p_duty = frnd(0.5);
     result.p_duty_ramp = frnd(0.2);
-  }
-  else
-  {
+  } else {
     result.p_duty = 0.4 + frnd(0.5);
     result.p_duty_ramp = -frnd(0.7);
   }
   result.p_env_attack = 0.0;
   result.p_env_sustain = 0.1 + frnd(0.2);
   result.p_env_decay = frnd(0.4);
-  if (rnd(1))
-    result.p_env_punch = frnd(0.3);
-  if (rnd(2) === 0)
-  {
+  if (rnd(1)) result.p_env_punch = frnd(0.3);
+  if (rnd(2) === 0) {
     result.p_pha_offset = frnd(0.2);
     result.p_pha_ramp = -frnd(0.2);
   }
-  if (rnd(1))
-    result.p_hpf_freq = frnd(0.3);
+  if (rnd(1)) result.p_hpf_freq = frnd(0.3);
 
   return result;
-};
+}
 
 function explosion() {
-  const result=Params();
+  const result = Params();
 
   if (rnd(1)) {
     result.p_base_freq = 0.1 + frnd(0.4);
@@ -187,10 +173,8 @@ function explosion() {
     result.p_freq_ramp = -0.2 - frnd(0.2);
   }
   result.p_base_freq *= result.p_base_freq;
-  if (rnd(4) === 0)
-    result.p_freq_ramp = 0.0;
-  if (rnd(2) === 0)
-    result.p_repeat_speed = 0.3 + frnd(0.5);
+  if (rnd(4) === 0) result.p_freq_ramp = 0.0;
+  if (rnd(2) === 0) result.p_repeat_speed = 0.3 + frnd(0.5);
   result.p_env_attack = 0.0;
   result.p_env_sustain = 0.1 + frnd(0.3);
   result.p_env_decay = frnd(0.5);
@@ -209,105 +193,104 @@ function explosion() {
   }
 
   return result;
-};
+}
 //9675111
 function birdSound() {
-  const result=Params();
+  const result = Params();
 
-if (frnd(10) < 1) {
-    result.wave_type = Math.floor(frnd(SHAPES.length));
-    if (result.wave_type === 3) {
-      result.wave_type = SQUARE;
-    }
-result.p_env_attack = 0.4304400932967592 + frnd(0.2) - 0.1;
-result.p_env_sustain = 0.15739346034252394 + frnd(0.2) - 0.1;
-result.p_env_punch = 0.004488201744871758 + frnd(0.2) - 0.1;
-result.p_env_decay = 0.07478075528212291 + frnd(0.2) - 0.1;
-result.p_base_freq = 0.9865265720147687 + frnd(0.2) - 0.1;
-result.p_freq_limit = 0 + frnd(0.2) - 0.1;
-result.p_freq_ramp = -0.2995018224359539 + frnd(0.2) - 0.1;
-if (frnd(1.0) < 0.5) {
-  result.p_freq_ramp = 0.1 + frnd(0.15);
-}
-result.p_freq_dramp = 0.004598608156964473 + frnd(0.1) - 0.05;
-result.p_vib_strength = -0.2202799497929496 + frnd(0.2) - 0.1;
-result.p_vib_speed = 0.8084998703158364 + frnd(0.2) - 0.1;
-result.p_arp_mod = 0;//-0.46410459213693644+frnd(0.2)-0.1;
-result.p_arp_speed = 0;//-0.10955361249587248+frnd(0.2)-0.1;
-result.p_duty = -0.9031808754347107 + frnd(0.2) - 0.1;
-result.p_duty_ramp = -0.8128699999808343 + frnd(0.2) - 0.1;
-result.p_repeat_speed = 0.6014860189319991 + frnd(0.2) - 0.1;
-result.p_pha_offset = -0.9424902314367765 + frnd(0.2) - 0.1;
-result.p_pha_ramp = -0.1055482222272056 + frnd(0.2) - 0.1;
-result.p_lpf_freq = 0.9989765717851521 + frnd(0.2) - 0.1;
-result.p_lpf_ramp = -0.25051720626043017 + frnd(0.2) - 0.1;
-result.p_lpf_resonance = 0.32777871505494693 + frnd(0.2) - 0.1;
-result.p_hpf_freq = 0.0023548750981756753 + frnd(0.2) - 0.1;
-result.p_hpf_ramp = -0.002375673204842568 + frnd(0.2) - 0.1;
-return result;
-}
-
-if (frnd(10) < 1) {
-    result.wave_type = Math.floor(frnd(SHAPES.length));
-    if (result.wave_type === 3) {
-      result.wave_type = SQUARE;
-    }
-result.p_env_attack = 0.5277795946672003 + frnd(0.2) - 0.1;
-result.p_env_sustain = 0.18243733568468432 + frnd(0.2) - 0.1;
-result.p_env_punch = -0.020159754546840117 + frnd(0.2) - 0.1;
-result.p_env_decay = 0.1561353422051903 + frnd(0.2) - 0.1;
-result.p_base_freq = 0.9028855606533718 + frnd(0.2) - 0.1;
-result.p_freq_limit = -0.008842787837148716;
-result.p_freq_ramp = -0.1;
-result.p_freq_dramp = -0.012891241489551925;
-result.p_vib_strength = -0.17923136138403065 + frnd(0.2) - 0.1;
-result.p_vib_speed = 0.908263385610142 + frnd(0.2) - 0.1;
-result.p_arp_mod = 0.41690153355414894 + frnd(0.2) - 0.1;
-result.p_arp_speed = 0.0010766233195860703 + frnd(0.2) - 0.1;
-result.p_duty = -0.8735363011184684 + frnd(0.2) - 0.1;
-result.p_duty_ramp = -0.7397985366747507 + frnd(0.2) - 0.1;
-result.p_repeat_speed = 0.0591789344172107 + frnd(0.2) - 0.1;
-result.p_pha_offset = -0.9961184222777699 + frnd(0.2) - 0.1;
-result.p_pha_ramp = -0.08234769395850523 + frnd(0.2) - 0.1;
-result.p_lpf_freq = 0.9412475115697335 + frnd(0.2) - 0.1;
-result.p_lpf_ramp = -0.18261358925834958 + frnd(0.2) - 0.1;
-result.p_lpf_resonance = 0.24541438107389477 + frnd(0.2) - 0.1;
-result.p_hpf_freq = -0.01831940280978611 + frnd(0.2) - 0.1;
-result.p_hpf_ramp = -0.03857383633171346 + frnd(0.2) - 0.1;
-return result;
-
-}
   if (frnd(10) < 1) {
-//result.wave_type = 4;
+    result.wave_type = Math.floor(frnd(SHAPES.length));
+    if (result.wave_type === 3) {
+      result.wave_type = SQUARE;
+    }
+    result.p_env_attack = 0.4304400932967592 + frnd(0.2) - 0.1;
+    result.p_env_sustain = 0.15739346034252394 + frnd(0.2) - 0.1;
+    result.p_env_punch = 0.004488201744871758 + frnd(0.2) - 0.1;
+    result.p_env_decay = 0.07478075528212291 + frnd(0.2) - 0.1;
+    result.p_base_freq = 0.9865265720147687 + frnd(0.2) - 0.1;
+    result.p_freq_limit = 0 + frnd(0.2) - 0.1;
+    result.p_freq_ramp = -0.2995018224359539 + frnd(0.2) - 0.1;
+    if (frnd(1.0) < 0.5) {
+      result.p_freq_ramp = 0.1 + frnd(0.15);
+    }
+    result.p_freq_dramp = 0.004598608156964473 + frnd(0.1) - 0.05;
+    result.p_vib_strength = -0.2202799497929496 + frnd(0.2) - 0.1;
+    result.p_vib_speed = 0.8084998703158364 + frnd(0.2) - 0.1;
+    result.p_arp_mod = 0; //-0.46410459213693644+frnd(0.2)-0.1;
+    result.p_arp_speed = 0; //-0.10955361249587248+frnd(0.2)-0.1;
+    result.p_duty = -0.9031808754347107 + frnd(0.2) - 0.1;
+    result.p_duty_ramp = -0.8128699999808343 + frnd(0.2) - 0.1;
+    result.p_repeat_speed = 0.6014860189319991 + frnd(0.2) - 0.1;
+    result.p_pha_offset = -0.9424902314367765 + frnd(0.2) - 0.1;
+    result.p_pha_ramp = -0.1055482222272056 + frnd(0.2) - 0.1;
+    result.p_lpf_freq = 0.9989765717851521 + frnd(0.2) - 0.1;
+    result.p_lpf_ramp = -0.25051720626043017 + frnd(0.2) - 0.1;
+    result.p_lpf_resonance = 0.32777871505494693 + frnd(0.2) - 0.1;
+    result.p_hpf_freq = 0.0023548750981756753 + frnd(0.2) - 0.1;
+    result.p_hpf_ramp = -0.002375673204842568 + frnd(0.2) - 0.1;
+    return result;
+  }
+
+  if (frnd(10) < 1) {
+    result.wave_type = Math.floor(frnd(SHAPES.length));
+    if (result.wave_type === 3) {
+      result.wave_type = SQUARE;
+    }
+    result.p_env_attack = 0.5277795946672003 + frnd(0.2) - 0.1;
+    result.p_env_sustain = 0.18243733568468432 + frnd(0.2) - 0.1;
+    result.p_env_punch = -0.020159754546840117 + frnd(0.2) - 0.1;
+    result.p_env_decay = 0.1561353422051903 + frnd(0.2) - 0.1;
+    result.p_base_freq = 0.9028855606533718 + frnd(0.2) - 0.1;
+    result.p_freq_limit = -0.008842787837148716;
+    result.p_freq_ramp = -0.1;
+    result.p_freq_dramp = -0.012891241489551925;
+    result.p_vib_strength = -0.17923136138403065 + frnd(0.2) - 0.1;
+    result.p_vib_speed = 0.908263385610142 + frnd(0.2) - 0.1;
+    result.p_arp_mod = 0.41690153355414894 + frnd(0.2) - 0.1;
+    result.p_arp_speed = 0.0010766233195860703 + frnd(0.2) - 0.1;
+    result.p_duty = -0.8735363011184684 + frnd(0.2) - 0.1;
+    result.p_duty_ramp = -0.7397985366747507 + frnd(0.2) - 0.1;
+    result.p_repeat_speed = 0.0591789344172107 + frnd(0.2) - 0.1;
+    result.p_pha_offset = -0.9961184222777699 + frnd(0.2) - 0.1;
+    result.p_pha_ramp = -0.08234769395850523 + frnd(0.2) - 0.1;
+    result.p_lpf_freq = 0.9412475115697335 + frnd(0.2) - 0.1;
+    result.p_lpf_ramp = -0.18261358925834958 + frnd(0.2) - 0.1;
+    result.p_lpf_resonance = 0.24541438107389477 + frnd(0.2) - 0.1;
+    result.p_hpf_freq = -0.01831940280978611 + frnd(0.2) - 0.1;
+    result.p_hpf_ramp = -0.03857383633171346 + frnd(0.2) - 0.1;
+    return result;
+  }
+  if (frnd(10) < 1) {
+    //result.wave_type = 4;
     result.wave_type = Math.floor(frnd(SHAPES.length));
 
     if (result.wave_type === 3) {
       result.wave_type = SQUARE;
     }
-result.p_env_attack = 0.4304400932967592 + frnd(0.2) - 0.1;
-result.p_env_sustain = 0.15739346034252394 + frnd(0.2) - 0.1;
-result.p_env_punch = 0.004488201744871758 + frnd(0.2) - 0.1;
-result.p_env_decay = 0.07478075528212291 + frnd(0.2) - 0.1;
-result.p_base_freq = 0.9865265720147687 + frnd(0.2) - 0.1;
-result.p_freq_limit = 0 + frnd(0.2) - 0.1;
-result.p_freq_ramp = -0.2995018224359539 + frnd(0.2) - 0.1;
-result.p_freq_dramp = 0.004598608156964473 + frnd(0.2) - 0.1;
-result.p_vib_strength = -0.2202799497929496 + frnd(0.2) - 0.1;
-result.p_vib_speed = 0.8084998703158364 + frnd(0.2) - 0.1;
-result.p_arp_mod = -0.46410459213693644 + frnd(0.2) - 0.1;
-result.p_arp_speed = -0.10955361249587248 + frnd(0.2) - 0.1;
-result.p_duty = -0.9031808754347107 + frnd(0.2) - 0.1;
-result.p_duty_ramp = -0.8128699999808343 + frnd(0.2) - 0.1;
-result.p_repeat_speed = 0.7014860189319991 + frnd(0.2) - 0.1;
-result.p_pha_offset = -0.9424902314367765 + frnd(0.2) - 0.1;
-result.p_pha_ramp = -0.1055482222272056 + frnd(0.2) - 0.1;
-result.p_lpf_freq = 0.9989765717851521 + frnd(0.2) - 0.1;
-result.p_lpf_ramp = -0.25051720626043017 + frnd(0.2) - 0.1;
-result.p_lpf_resonance = 0.32777871505494693 + frnd(0.2) - 0.1;
-result.p_hpf_freq = 0.0023548750981756753 + frnd(0.2) - 0.1;
-result.p_hpf_ramp = -0.002375673204842568 + frnd(0.2) - 0.1;
-return result;
-}
+    result.p_env_attack = 0.4304400932967592 + frnd(0.2) - 0.1;
+    result.p_env_sustain = 0.15739346034252394 + frnd(0.2) - 0.1;
+    result.p_env_punch = 0.004488201744871758 + frnd(0.2) - 0.1;
+    result.p_env_decay = 0.07478075528212291 + frnd(0.2) - 0.1;
+    result.p_base_freq = 0.9865265720147687 + frnd(0.2) - 0.1;
+    result.p_freq_limit = 0 + frnd(0.2) - 0.1;
+    result.p_freq_ramp = -0.2995018224359539 + frnd(0.2) - 0.1;
+    result.p_freq_dramp = 0.004598608156964473 + frnd(0.2) - 0.1;
+    result.p_vib_strength = -0.2202799497929496 + frnd(0.2) - 0.1;
+    result.p_vib_speed = 0.8084998703158364 + frnd(0.2) - 0.1;
+    result.p_arp_mod = -0.46410459213693644 + frnd(0.2) - 0.1;
+    result.p_arp_speed = -0.10955361249587248 + frnd(0.2) - 0.1;
+    result.p_duty = -0.9031808754347107 + frnd(0.2) - 0.1;
+    result.p_duty_ramp = -0.8128699999808343 + frnd(0.2) - 0.1;
+    result.p_repeat_speed = 0.7014860189319991 + frnd(0.2) - 0.1;
+    result.p_pha_offset = -0.9424902314367765 + frnd(0.2) - 0.1;
+    result.p_pha_ramp = -0.1055482222272056 + frnd(0.2) - 0.1;
+    result.p_lpf_freq = 0.9989765717851521 + frnd(0.2) - 0.1;
+    result.p_lpf_ramp = -0.25051720626043017 + frnd(0.2) - 0.1;
+    result.p_lpf_resonance = 0.32777871505494693 + frnd(0.2) - 0.1;
+    result.p_hpf_freq = 0.0023548750981756753 + frnd(0.2) - 0.1;
+    result.p_hpf_ramp = -0.002375673204842568 + frnd(0.2) - 0.1;
+    return result;
+  }
   if (frnd(5) > 1) {
     result.wave_type = Math.floor(frnd(SHAPES.length));
 
@@ -362,17 +345,16 @@ return result;
       result.p_vib_strength = 0.0018874158972302657 + frnd(0.2) - 0.1;
     }
     return result;
-
   }
 
-  result.wave_type = Math.floor(frnd(SHAPES.length));//TRIANGLE;
+  result.wave_type = Math.floor(frnd(SHAPES.length)); //TRIANGLE;
   if (result.wave_type === 1 || result.wave_type === 3) {
     result.wave_type = 2;
   }
   //new
   result.p_base_freq = 0.85 + frnd(0.15);
   result.p_freq_ramp = 0.3 + frnd(0.15);
-//  result.p_freq_dramp = 0.3+frnd(2.0);
+  //  result.p_freq_dramp = 0.3+frnd(2.0);
 
   result.p_env_attack = 0 + frnd(0.09);
   result.p_env_sustain = 0.2 + frnd(0.3);
@@ -381,7 +363,6 @@ return result;
   result.p_duty = frnd(2.0) - 1.0;
   result.p_duty_ramp = Math.pow(frnd(2.0) - 1.0, 3.0);
 
-
   result.p_repeat_speed = 0.5 + frnd(0.1);
 
   result.p_pha_offset = -0.3 + frnd(0.9);
@@ -389,7 +370,6 @@ return result;
 
   result.p_arp_speed = 0.4 + frnd(0.6);
   result.p_arp_mod = 0.8 + frnd(0.1);
-
 
   result.p_lpf_resonance = frnd(2.0) - 1.0;
   result.p_lpf_freq = 1.0 - Math.pow(frnd(1.0), 3.0);
@@ -400,12 +380,11 @@ return result;
   result.p_hpf_ramp = Math.pow(frnd(2.0) - 1.0, 5.0);
 
   return result;
-};
-
+}
 
 function pushSound() {
-  const result=Params();
-  result.wave_type = Math.floor(frnd(SHAPES.length));//TRIANGLE;
+  const result = Params();
+  result.wave_type = Math.floor(frnd(SHAPES.length)); //TRIANGLE;
   if (result.wave_type === 2) {
     result.wave_type++;
   }
@@ -427,32 +406,24 @@ function pushSound() {
   result.p_arp_mod = 0.8 - frnd(1.6);
 
   return result;
-};
-
-
+}
 
 function powerUp() {
-  const result=Params();
-  if (rnd(1))
-    result.wave_type = SAWTOOTH;
-  else
-    result.p_duty = frnd(0.6);
+  const result = Params();
+  if (rnd(1)) result.wave_type = SAWTOOTH;
+  else result.p_duty = frnd(0.6);
   result.wave_type = Math.floor(frnd(SHAPES.length));
   if (result.wave_type === 3) {
     result.wave_type = SQUARE;
   }
-  if (rnd(1))
-  {
+  if (rnd(1)) {
     result.p_base_freq = 0.2 + frnd(0.3);
     result.p_freq_ramp = 0.1 + frnd(0.4);
     result.p_repeat_speed = 0.4 + frnd(0.4);
-  }
-  else
-  {
+  } else {
     result.p_base_freq = 0.2 + frnd(0.3);
     result.p_freq_ramp = 0.05 + frnd(0.2);
-    if (rnd(1))
-    {
+    if (rnd(1)) {
       result.p_vib_strength = frnd(0.7);
       result.p_vib_speed = frnd(0.6);
     }
@@ -462,26 +433,22 @@ function powerUp() {
   result.p_env_decay = 0.1 + frnd(0.4);
 
   return result;
-};
+}
 
 function hitHurt() {
   const result = Params();
   result.wave_type = rnd(2);
-  if (result.wave_type === SINE)
-    result.wave_type = NOISE;
-  if (result.wave_type === SQUARE)
-    result.p_duty = frnd(0.6);
+  if (result.wave_type === SINE) result.wave_type = NOISE;
+  if (result.wave_type === SQUARE) result.p_duty = frnd(0.6);
   result.wave_type = Math.floor(frnd(SHAPES.length));
   result.p_base_freq = 0.2 + frnd(0.6);
   result.p_freq_ramp = -0.3 - frnd(0.4);
   result.p_env_attack = 0.0;
   result.p_env_sustain = frnd(0.1);
   result.p_env_decay = 0.1 + frnd(0.2);
-  if (rnd(1))
-    result.p_hpf_freq = frnd(0.3);
+  if (rnd(1)) result.p_hpf_freq = frnd(0.3);
   return result;
-};
-
+}
 
 function jump() {
   const result = Params();
@@ -496,12 +463,10 @@ function jump() {
   result.p_env_attack = 0.0;
   result.p_env_sustain = 0.1 + frnd(0.3);
   result.p_env_decay = 0.1 + frnd(0.2);
-  if (rnd(1))
-    result.p_hpf_freq = frnd(0.3);
-  if (rnd(1))
-    result.p_lpf_freq = 1.0 - frnd(0.6);
+  if (rnd(1)) result.p_hpf_freq = frnd(0.3);
+  if (rnd(1)) result.p_lpf_freq = 1.0 - frnd(0.6);
   return result;
-};
+}
 
 function blipSelect() {
   const result = Params();
@@ -510,22 +475,20 @@ function blipSelect() {
   if (result.wave_type === 3) {
     result.wave_type = rnd(1);
   }
-  if (result.wave_type === SQUARE)
-    result.p_duty = frnd(0.6);
+  if (result.wave_type === SQUARE) result.p_duty = frnd(0.6);
   result.p_base_freq = 0.2 + frnd(0.4);
   result.p_env_attack = 0.0;
   result.p_env_sustain = 0.1 + frnd(0.1);
   result.p_env_decay = frnd(0.2);
   result.p_hpf_freq = 0.1;
   return result;
-};
+}
 
 function random() {
   const result = Params();
   result.wave_type = Math.floor(frnd(SHAPES.length));
   result.p_base_freq = Math.pow(frnd(2.0) - 1.0, 2.0);
-  if (rnd(1))
-    result.p_base_freq = Math.pow(frnd(2.0) - 1.0, 3.0) + 0.5;
+  if (rnd(1)) result.p_base_freq = Math.pow(frnd(2.0) - 1.0, 3.0) + 0.5;
   result.p_freq_limit = 0.0;
   result.p_freq_ramp = Math.pow(frnd(2.0) - 1.0, 5.0);
   if (result.p_base_freq > 0.7 && result.p_freq_ramp > 0.2)
@@ -558,32 +521,32 @@ function random() {
   result.p_arp_speed = frnd(2.0) - 1.0;
   result.p_arp_mod = frnd(2.0) - 1.0;
   return result;
-};
+}
 
 const generators = [
-pickupCoin,
-laserShoot,
-explosion,
-powerUp,
-hitHurt,
-jump,
-blipSelect,
-pushSound,
-random,
-birdSound
+  pickupCoin,
+  laserShoot,
+  explosion,
+  powerUp,
+  hitHurt,
+  jump,
+  blipSelect,
+  pushSound,
+  random,
+  birdSound,
 ];
 
 const generatorNames = [
-'pickupCoin',
-'laserShoot',
-'explosion',
-'powerUp',
-'hitHurt',
-'jump',
-'blipSelect',
-'pushSound',
-'random',
-'birdSound'
+  "pickupCoin",
+  "laserShoot",
+  "explosion",
+  "powerUp",
+  "hitHurt",
+  "jump",
+  "blipSelect",
+  "pushSound",
+  "random",
+  "birdSound",
 ];
 
 /*
@@ -598,44 +561,40 @@ function generateFromSeed(seed) {
   result.seed = seed;
   seeded = false;
   return result;
-};
+}
 
 function SoundEffect(length, sample_rate) {
   this._buffer = AUDIO_CONTEXT.createBuffer(1, length, sample_rate);
 }
 
-SoundEffect.prototype.getBuffer = function() {
+SoundEffect.prototype.getBuffer = function () {
   return this._buffer.getChannelData(0);
 };
 
-
 //unlock bullshit
-function ULBS(){   
-  if (AUDIO_CONTEXT.state === 'suspended')
-  {
-      const unlock = function()
-      {
-        AUDIO_CONTEXT.resume().then(function()
-          {
-            document.body.removeEventListener('touchstart', unlock);
-            document.body.removeEventListener('touchend', unlock);
-            document.body.removeEventListener('mousedown', unlock);
-            document.body.removeEventListener('mouseup', unlock);
-            document.body.removeEventListener('keydown', unlock);
-            document.body.removeEventListener('keyup', unlock);
-          });
-      };
+function ULBS() {
+  if (AUDIO_CONTEXT.state === "suspended") {
+    const unlock = function () {
+      AUDIO_CONTEXT.resume().then(function () {
+        document.body.removeEventListener("touchstart", unlock);
+        document.body.removeEventListener("touchend", unlock);
+        document.body.removeEventListener("mousedown", unlock);
+        document.body.removeEventListener("mouseup", unlock);
+        document.body.removeEventListener("keydown", unlock);
+        document.body.removeEventListener("keyup", unlock);
+      });
+    };
 
-      document.body.addEventListener('touchstart', unlock, false);
-      document.body.addEventListener('touchend', unlock, false);
-      document.body.addEventListener('mousedown', unlock, false);
-      document.body.addEventListener('mouseup', unlock, false);
-      document.body.addEventListener('keydown', unlock, false);
-      document.body.addEventListener('keyup', unlock, false);
+    document.body.addEventListener("touchstart", unlock, false);
+    document.body.addEventListener("touchend", unlock, false);
+    document.body.addEventListener("mousedown", unlock, false);
+    document.body.addEventListener("mouseup", unlock, false);
+    document.body.addEventListener("keydown", unlock, false);
+    document.body.addEventListener("keyup", unlock, false);
   }
 }
 
-SoundEffect.prototype.play = function() {
+SoundEffect.prototype.play = function () {
   ULBS();
 
   const source = AUDIO_CONTEXT.createBufferSource();
@@ -654,37 +613,38 @@ SoundEffect.prototype.play = function() {
   filter2.connect(filter3);
   filter3.connect(AUDIO_CONTEXT.destination);
   const t = AUDIO_CONTEXT.currentTime;
-  if (typeof source.start != 'undefined') {
+  if (typeof source.start != "undefined") {
     source.start(t);
   } else {
     source.noteOn(t);
   }
-  source.onended = function() {
-    filter3.disconnect()
-  }
+  source.onended = function () {
+    filter3.disconnect();
+  };
 };
 
 SoundEffect.MIN_SAMPLE_RATE = 22050;
 
-if (typeof AUDIO_CONTEXT == 'undefined') {
+if (typeof AUDIO_CONTEXT == "undefined") {
   SoundEffect = function SoundEffect(length, sample_rate) {
     this._sample_rate = sample_rate;
     this._buffer = new Array(length);
     this._audioElement = null;
   };
 
-  SoundEffect.prototype.getBuffer = function() {
+  SoundEffect.prototype.getBuffer = function () {
     this._audioElement = null;
     return this._buffer;
   };
 
-  SoundEffect.prototype.play = function() {
+  SoundEffect.prototype.play = function () {
     if (this._audioElement) {
       this._audioElement.cloneNode(false).play();
     } else {
       for (let i = 0; i < this._buffer.length; i++) {
         // bit_depth is always 8, rescale [-1.0, 1.0) to [0, 256)
-        this._buffer[i] = 255 & Math.floor(128 * Math.max(0, Math.min(this._buffer[i] + 1, 2)));
+        this._buffer[i] =
+          255 & Math.floor(128 * Math.max(0, Math.min(this._buffer[i] + 1, 2)));
       }
       let wav = MakeRiff(this._sample_rate, BIT_DEPTH, this._buffer);
       this._audioElement = new Audio();
@@ -696,8 +656,8 @@ if (typeof AUDIO_CONTEXT == 'undefined') {
   SoundEffect.MIN_SAMPLE_RATE = 1;
 }
 
-SoundEffect.generate = function(ps) {
-/*  window.console.log(ps.wave_type + "\t" + ps.seed);
+SoundEffect.generate = function (ps) {
+  /*  window.console.log(ps.wave_type + "\t" + ps.seed);
 
   let psstring="";
   for (let n in ps) {
@@ -720,30 +680,27 @@ window.console.log(psstring);*/
     square_duty = 0.5 - ps.p_duty * 0.5;
     square_slide = -ps.p_duty_ramp * 0.00005;
 
-    if (ps.p_arp_mod >= 0.0)
-      arp_mod = 1.0 - Math.pow(ps.p_arp_mod, 2.0) * 0.9;
-    else
-      arp_mod = 1.0 + Math.pow(ps.p_arp_mod, 2.0) * 10.0;
+    if (ps.p_arp_mod >= 0.0) arp_mod = 1.0 - Math.pow(ps.p_arp_mod, 2.0) * 0.9;
+    else arp_mod = 1.0 + Math.pow(ps.p_arp_mod, 2.0) * 10.0;
     arp_time = 0;
     arp_limit = Math.floor(Math.pow(1.0 - ps.p_arp_speed, 2.0) * 20000 + 32);
-    if (ps.p_arp_speed == 1.0)
-      arp_limit = 0;
-  };
+    if (ps.p_arp_speed == 1.0) arp_limit = 0;
+  }
 
   let rep_time;
   let fperiod, period, fmaxperiod;
   let fslide, fdslide;
   let square_duty, square_slide;
   let arp_mod, arp_time, arp_limit;
-  repeat();  // First time through, this is a bit of a misnomer
+  repeat(); // First time through, this is a bit of a misnomer
 
   // Filter
   let fltp = 0.0;
   let fltdp = 0.0;
   let fltw = Math.pow(ps.p_lpf_freq, 3.0) * 0.1;
   let fltw_d = 1.0 + ps.p_lpf_ramp * 0.0001;
-  let fltdmp = 5.0 / (1.0 + Math.pow(ps.p_lpf_resonance, 2.0) * 20.0) *
-    (0.01 + fltw);
+  let fltdmp =
+    (5.0 / (1.0 + Math.pow(ps.p_lpf_resonance, 2.0) * 20.0)) * (0.01 + fltw);
   if (fltdmp > 0.8) fltdmp = 0.8;
   let fltphp = 0.0;
   let flthp = Math.pow(ps.p_hpf_freq, 2.0) * 0.1;
@@ -761,7 +718,7 @@ window.console.log(psstring);*/
   let env_length = [
     Math.floor(ps.p_env_attack * ps.p_env_attack * 100000.0),
     Math.floor(ps.p_env_sustain * ps.p_env_sustain * 100000.0),
-    Math.floor(ps.p_env_decay * ps.p_env_decay * 100000.0)
+    Math.floor(ps.p_env_decay * ps.p_env_decay * 100000.0),
   ];
   let env_total_length = env_length[0] + env_length[1] + env_length[2];
 
@@ -774,19 +731,17 @@ window.console.log(psstring);*/
   let iphase = Math.abs(Math.floor(fphase));
   let ipp = 0;
   let phaser_buffer = [];
-  for (let i = 0; i < 1024; ++i)
-    phaser_buffer[i] = 0.0;
+  for (let i = 0; i < 1024; ++i) phaser_buffer[i] = 0.0;
 
   // Noise
   let noise_buffer = [];
-  for (let i = 0; i < 32; ++i)
-    noise_buffer[i] = Math.random() * 2.0 - 1.0;
+  for (let i = 0; i < 32; ++i) noise_buffer[i] = Math.random() * 2.0 - 1.0;
 
   // Repeat
-  let rep_limit = Math.floor(Math.pow(1.0 - ps.p_repeat_speed, 2.0) * 20000
-                             + 32);
-  if (ps.p_repeat_speed == 0.0)
-    rep_limit = 0;
+  let rep_limit = Math.floor(
+    Math.pow(1.0 - ps.p_repeat_speed, 2.0) * 20000 + 32,
+  );
+  if (ps.p_repeat_speed == 0.0) rep_limit = 0;
 
   //let gain = 2.0 * Math.log(1 + (Math.E - 1) * ps.sound_vol);
   // let gain = 2.0 * ps.sound_vol;
@@ -809,16 +764,14 @@ window.console.log(psstring);*/
     // Assume 4x gets close enough to MIN_SAMPLE_RATE
     sound = new SoundEffect(4 * buffer_length, SoundEffect.MIN_SAMPLE_RATE);
   } else {
-    sound = new SoundEffect(buffer_length, ps.sample_rate)
+    sound = new SoundEffect(buffer_length, ps.sample_rate);
   }
   let buffer = sound.getBuffer();
 
-  let sample=0;
-  for (let t = 0;; ++t) {
-
+  let sample = 0;
+  for (let t = 0; ; ++t) {
     // Repeats
-    if (rep_limit != 0 && ++rep_time >= rep_limit)
-      repeat();
+    if (rep_limit != 0 && ++rep_time >= rep_limit) repeat();
 
     // Arpeggio (single)
     if (arp_limit != 0 && t >= arp_limit) {
@@ -831,8 +784,7 @@ window.console.log(psstring);*/
     fperiod *= fslide;
     if (fperiod > fmaxperiod) {
       fperiod = fmaxperiod;
-      if (ps.p_freq_limit > 0.0)
-        buffer_complete = true;
+      if (ps.p_freq_limit > 0.0) buffer_complete = true;
     }
 
     // Vibrato
@@ -853,18 +805,15 @@ window.console.log(psstring);*/
     if (env_time > env_length[env_stage]) {
       env_time = 1;
       env_stage++;
-      while (env_stage < 3 && env_length[env_stage] === 0)
-	env_stage++;
-      if (env_stage === 3)
-        break;
+      while (env_stage < 3 && env_length[env_stage] === 0) env_stage++;
+      if (env_stage === 3) break;
     }
-    if (env_stage === 0)
-      env_vol = env_time / env_length[0];
+    if (env_stage === 0) env_vol = env_time / env_length[0];
     else if (env_stage === 1)
-      env_vol = 1.0 + Math.pow(1.0 - env_time / env_length[1],
-                               1.0) * 2.0 * ps.p_env_punch;
-    else  // env_stage == 2
-      env_vol = 1.0 - env_time / env_length[2];
+      env_vol =
+        1.0 +
+        Math.pow(1.0 - env_time / env_length[1], 1.0) * 2.0 * ps.p_env_punch; // env_stage == 2
+    else env_vol = 1.0 - env_time / env_length[2];
 
     // Phaser step
     fphase += fdphase;
@@ -873,10 +822,8 @@ window.console.log(psstring);*/
 
     if (flthp_d != 0.0) {
       flthp *= flthp_d;
-      if (flthp < 0.00001)
-        flthp = 0.00001;
-      if (flthp > 0.1)
-        flthp = 0.1;
+      if (flthp < 0.00001) flthp = 0.00001;
+      if (flthp > 0.1) flthp = 0.1;
     }
 
     // 8x supersampling
@@ -894,22 +841,20 @@ window.console.log(psstring);*/
       // Base waveform
       let fp = phase / period;
       if (ps.wave_type === SQUARE) {
-        if (fp < square_duty)
-          sub_sample = 0.5;
-        else
-          sub_sample = -0.5;
+        if (fp < square_duty) sub_sample = 0.5;
+        else sub_sample = -0.5;
       } else if (ps.wave_type === SAWTOOTH) {
         sub_sample = 1.0 - fp * 2;
       } else if (ps.wave_type === SINE) {
         sub_sample = Math.sin(fp * 2 * Math.PI);
       } else if (ps.wave_type === NOISE) {
-        sub_sample = noise_buffer[Math.floor(phase * 32 / period)];
+        sub_sample = noise_buffer[Math.floor((phase * 32) / period)];
       } else if (ps.wave_type === TRIANGLE) {
         sub_sample = Math.abs(1 - fp * 2) - 1;
       } else if (ps.wave_type === BREAKER) {
         sub_sample = Math.abs(1 - fp * fp * 2) - 1;
       } else {
-        throw new Exception('bad wave type! ' + ps.wave_type);
+        throw new Exception("bad wave type! " + ps.wave_type);
       }
 
       // Low-pass filter
@@ -950,7 +895,7 @@ window.console.log(psstring);*/
       continue;
     }
 
-    sample = sample / 8 * masterVolume;
+    sample = (sample / 8) * masterVolume;
     sample *= gain;
 
     buffer[buffer_i++] = sample;
@@ -965,7 +910,7 @@ window.console.log(psstring);*/
   if (summands > 0) {
     sample = sample_sum / summands;
 
-    sample = sample / 8 * masterVolume;
+    sample = (sample / 8) * masterVolume;
     sample *= gain;
 
     buffer[buffer_i++] = sample;
@@ -980,9 +925,9 @@ window.console.log(psstring);*/
   return sound;
 };
 
-if (typeof exports != 'undefined') {
+if (typeof exports != "undefined") {
   // For node.js
-  let RIFFWAVE = require('./riffwave').RIFFWAVE;
+  let RIFFWAVE = require("./riffwave").RIFFWAVE;
   exports.Params = Params;
   exports.generate = generate;
 }
@@ -991,7 +936,7 @@ const sfxCache = {};
 let cachedSeeds = [];
 const CACHE_MAX = 50;
 
-function cacheSeed(seed){
+function cacheSeed(seed) {
   if (seed in sfxCache) {
     return sfxCache[seed];
   }
@@ -1005,8 +950,8 @@ function cacheSeed(seed){
   sfxCache[seed] = sound;
   cachedSeeds.push(seed);
 
-  while (cachedSeeds.length>CACHE_MAX) {
-    const toRemove=cachedSeeds[0];
+  while (cachedSeeds.length > CACHE_MAX) {
+    const toRemove = cachedSeeds[0];
     cachedSeeds = cachedSeeds.slice(1);
     delete sfxCache[toRemove];
   }
@@ -1014,12 +959,11 @@ function cacheSeed(seed){
   return sound;
 }
 
-
-function playSound(seed,ignore) {
-  if (ignore!==true){
+function playSound(seed, ignore) {
+  if (ignore !== true) {
     pushSoundToHistory(seed);
   }
-  if (muted){
+  if (muted) {
     return;
   }
   checkAudioContextExists();
@@ -1028,29 +972,26 @@ function playSound(seed,ignore) {
   sound.play();
 }
 
-
-
-function killAudioButton(){
+function killAudioButton() {
   const mb = document.getElementById("muteButton");
   const umb = document.getElementById("unMuteButton");
-  if (mb){
+  if (mb) {
     mb.remove();
     umb.remove();
   }
 }
 
-function showAudioButton(){
+function showAudioButton() {
   const mb = document.getElementById("muteButton");
   const umb = document.getElementById("unMuteButton");
-  if (mb){
-    mb.style.display="block"; 
-    umb.style.display="none";
+  if (mb) {
+    mb.style.display = "block";
+    umb.style.display = "none";
   }
 }
 
-
 function toggleMute() {
-  if (muted===0){
+  if (muted === 0) {
     muteAudio();
   } else {
     unMuteAudio();
@@ -1058,20 +999,20 @@ function toggleMute() {
 }
 
 function muteAudio() {
-  muted=1; 
+  muted = 1;
   const mb = document.getElementById("muteButton");
   const umb = document.getElementById("unMuteButton");
-  if (mb){
-    mb.style.display="none"; 
-    umb.style.display="block";
+  if (mb) {
+    mb.style.display = "none";
+    umb.style.display = "block";
   }
 }
 function unMuteAudio() {
-  muted=0; 
+  muted = 0;
   const mb = document.getElementById("muteButton");
   const umb = document.getElementById("unMuteButton");
-  if (mb){
-    mb.style.display="block"; 
-    umb.style.display="none";
+  if (mb) {
+    mb.style.display = "block";
+    umb.style.display = "none";
   }
 }

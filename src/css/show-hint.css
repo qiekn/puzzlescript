@@ -7,13 +7,13 @@
   margin: 0;
   padding: 2px;
 
-  -webkit-box-shadow: 2px 3px 5px rgba(0,0,0,.2);
-  -moz-box-shadow: 2px 3px 5px rgba(0,0,0,.2);
-  box-shadow: 2px 3px 5px rgba(0,0,0,.2);
+  -webkit-box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.2);
   border-radius: 3px;
   border: 1px solid light-dark(black, silver);
 
-  background: light-dark(white, #0F192A);
+  background: light-dark(white, #0f192a);
   font-size: 90%;
   font-family: monospace;
 
@@ -26,7 +26,7 @@
   padding: 0 4px;
   border-radius: 2px;
   white-space: pre;
-  color: light-dark(#c38a06, #FFc540);
+  color: light-dark(#c38a06, #ffc540);
   cursor: pointer;
 }
 
@@ -35,7 +35,6 @@ li.CodeMirror-hint-active {
   color: light-dark(rgb(233, 105, 0), orange);
 }
 
-
 .CodeMirror-hint-active .cm-s-midnight span.cm-COLOR-BLACK {
-    color: light-dark(white, black);
+  color: light-dark(white, black);
 }

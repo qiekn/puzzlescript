@@ -1,9 +1,17 @@
-'use strict';
+"use strict";
 
-for (let i=0;i<10;i++) {
-	let idname = "newsound"+i;
-	let el = document.getElementById(idname);
-    el.addEventListener("click", (function(n){return function(){return newSound(n);};})(i), false);
+for (let i = 0; i < 10; i++) {
+  let idname = "newsound" + i;
+  let el = document.getElementById(idname);
+  el.addEventListener(
+    "click",
+    (function (n) {
+      return function () {
+        return newSound(n);
+      };
+    })(i),
+    false,
+  );
 }
 
 //let soundButtonPress = document.getElementById("soundButtonPress");
@@ -37,7 +45,11 @@ let loadDropDown = document.getElementById("loadDropDown");
 loadDropDown.addEventListener("change", loadDropDownChange, false);
 
 let horizontalDragbar = document.getElementById("horizontaldragbar");
-horizontalDragbar.addEventListener("mousedown", horizontalDragbarMouseDown, false);
+horizontalDragbar.addEventListener(
+  "mousedown",
+  horizontalDragbarMouseDown,
+  false,
+);
 
 let verticalDragbar = document.getElementById("verticaldragbar");
 verticalDragbar.addEventListener("mousedown", verticalDragbarMouseDown, false);
@@ -48,10 +60,9 @@ window.addEventListener("load", reset_panels, false);
 /* https://github.com/ndrake/PuzzleScript/commit/de4ac2a38865b74e66c1d711a25f0691079a290d */
 window.onbeforeunload = function (e) {
   e = e || window.event;
-  let msg = 'You have unsaved changes!';
+  let msg = "You have unsaved changes!";
 
-  if(_editorDirty) {      
-
+  if (_editorDirty) {
     // For IE and Firefox prior to version 4
     if (e) {
       e.preventDefault();
@@ -65,6 +76,5 @@ window.onbeforeunload = function (e) {
 
 let gestureHandler = Mobile.enable();
 if (gestureHandler) {
-    gestureHandler.setFocusElement(document.getElementById('gameCanvas'));
+  gestureHandler.setFocusElement(document.getElementById("gameCanvas"));
 }
-

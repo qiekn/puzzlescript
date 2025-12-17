@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 let unitTesting = false;
 let lazyFunctionGeneration = true;
@@ -12,27 +12,24 @@ let ignoreNotJustPressedAction = true;
 let textMode = true;
 
 function doSetupTitleScreenLevelContinue() {
-    try {
-        if (storage_has(document.URL)) {
-            if (storage_has(document.URL + '_checkpoint')) {
-                let backupStr = storage_get(document.URL + '_checkpoint');
-                curlevelTarget = JSON.parse(backupStr);
+  try {
+    if (storage_has(document.URL)) {
+      if (storage_has(document.URL + "_checkpoint")) {
+        let backupStr = storage_get(document.URL + "_checkpoint");
+        curlevelTarget = JSON.parse(backupStr);
 
-                let arr = [];
-                for (let p in Object.keys(curlevelTarget.dat)) {
-                    arr[p] = curlevelTarget.dat[p];
-                }
-                curlevelTarget.dat = new Int32Array(arr);
-
-            }
-            curlevel = storage_get_int(document.URL, 0);
+        let arr = [];
+        for (let p in Object.keys(curlevelTarget.dat)) {
+          arr[p] = curlevelTarget.dat[p];
         }
-    } catch (ex) {
+        curlevelTarget.dat = new Int32Array(arr);
+      }
+      curlevel = storage_get_int(document.URL, 0);
     }
+  } catch (ex) {}
 }
 
 doSetupTitleScreenLevelContinue();
-
 
 let verbose_logging = false;
 let throttle_movement = false;
@@ -49,7 +46,7 @@ let winning = false;
 let againing = false;
 let againinterval = 150;
 let norepeat_action = false;
-let oldflickscreendat = [];//used for buffering old flickscreen/scrollscreen positions, in case player vanishes
+let oldflickscreendat = []; //used for buffering old flickscreen/scrollscreen positions, in case player vanishes
 let keybuffer = [];
 
 let restarting = false;
@@ -60,38 +57,37 @@ let textImages = {};
 
 let level = new Level(); //just give it some starting state
 
-
 function get_title_animation_frame() {
-    return Math.floor(((timer / 1000) / 0.3) * 10)
+  return Math.floor((timer / 1000 / 0.3) * 10);
 }
 
 var WORKLIST_OBJECTS_TO_GENERATE_FUNCTIONS_FOR = [];
 function tick_lazy_function_generation(iterative_generation = false) {
-    if (WORKLIST_OBJECTS_TO_GENERATE_FUNCTIONS_FOR.length === 0) {
-        return;
+  if (WORKLIST_OBJECTS_TO_GENERATE_FUNCTIONS_FOR.length === 0) {
+    return;
+  }
+  // spent a maximum of 10ms on lazy function generation
+  let start = performance.now();
+  var generated_count = 0;
+  while (
+    (performance.now() - start < 20 || !iterative_generation) &&
+    WORKLIST_OBJECTS_TO_GENERATE_FUNCTIONS_FOR.length > 0
+  ) {
+    const object = WORKLIST_OBJECTS_TO_GENERATE_FUNCTIONS_FOR.shift();
+    //depending on type of object
+    //if CellPattern, call generateMatchFunction
+    //if Rule, call generate_all_MatchFunctions
+    if (object instanceof CellPattern) {
+      object.matches = object.generateMatchFunction();
+    } else if (object instanceof Rule) {
+      object.generate_all_MatchFunctions();
+    } else {
+      throw new Error("Unknown object type: " + object);
     }
-    // spent a maximum of 10ms on lazy function generation
-    let start = performance.now();
-    var generated_count = 0;
-    while (
-        ((performance.now() - start < 20) || !iterative_generation)
-        && WORKLIST_OBJECTS_TO_GENERATE_FUNCTIONS_FOR.length > 0) {
-        const object = WORKLIST_OBJECTS_TO_GENERATE_FUNCTIONS_FOR.shift();
-        //depending on type of object
-        //if CellPattern, call generateMatchFunction
-        //if Rule, call generate_all_MatchFunctions
-        if (object instanceof CellPattern) {
-            object.matches = object.generateMatchFunction();
-        } else if (object instanceof Rule) {
-            object.generate_all_MatchFunctions();
-        } else {
-            throw new Error("Unknown object type: " + object);
-        }
-        generated_count++;
-    }
+    generated_count++;
+  }
 }
 
 function lazy_function_generation_clear_backlog() {
-    WORKLIST_OBJECTS_TO_GENERATE_FUNCTIONS_FOR = [];
+  WORKLIST_OBJECTS_TO_GENERATE_FUNCTIONS_FOR = [];
 }
-
