@@ -13,6 +13,7 @@ class BitVec {
   constructor(init) {
     this.data = new Int32Array(init);
   }
+
   /**
    * Clones this BitVec's data into a target BitVec
    * @param {BitVec} target - The target BitVec to copy data into
@@ -24,6 +25,7 @@ class BitVec {
     }
     return target;
   }
+
   /**
    * Creates a new BitVec with the same data as this one
    * @returns {BitVec} A new BitVec instance with copied data
@@ -31,6 +33,7 @@ class BitVec {
   clone() {
     return new BitVec(this.data);
   }
+
   /**
    * In-place bitwise AND operation with another BitVec
    * @param {BitVec} other - The BitVec to AND with
@@ -40,6 +43,7 @@ class BitVec {
       this.data[i] &= other.data[i];
     }
   }
+
   /**
    * In-place bitwise NOT operation (inverts all bits)
    */
@@ -48,6 +52,7 @@ class BitVec {
       this.data[i] = ~this.data[i];
     }
   }
+
   /**
    * In-place bitwise OR operation with another BitVec
    * @param {BitVec} other - The BitVec to OR with
@@ -57,6 +62,7 @@ class BitVec {
       this.data[i] |= other.data[i];
     }
   }
+
   /**
    * In-place clear operation - clears bits that are set in other
    * Equivalent to: this = this & ~other
@@ -67,6 +73,7 @@ class BitVec {
       this.data[i] &= ~other.data[i];
     }
   }
+
   /**
    * Sets a specific bit to 1
    * @param {number} ind - The bit index to set (0-based)
@@ -74,6 +81,7 @@ class BitVec {
   ibitset(ind) {
     this.data[ind >> 5] |= 1 << (ind & 31);
   }
+
   /**
    * Clears a specific bit (sets it to 0)
    * @param {number} ind - The bit index to clear (0-based)
@@ -81,6 +89,7 @@ class BitVec {
   ibitclear(ind) {
     this.data[ind >> 5] &= ~(1 << (ind & 31));
   }
+
   /**
    * Gets the value of a specific bit
    * @param {number} ind - The bit index to get (0-based)
@@ -89,6 +98,7 @@ class BitVec {
   get(ind) {
     return (this.data[ind >> 5] & (1 << (ind & 31))) !== 0;
   }
+
   /**
    * Gets bits at a shifted position and applies a mask
    * Handles cross-boundary reads when shift is not aligned to 32-bit boundaries
@@ -104,6 +114,7 @@ class BitVec {
     }
     return ret & mask;
   }
+
   /**
    * Sets bits at a shifted position using OR operation
    * Handles cross-boundary writes when shift is not aligned to 32-bit boundaries
@@ -120,6 +131,7 @@ class BitVec {
       this.data[shift_5 + 1] |= high;
     }
   }
+
   /**
    * Clears bits at a shifted position
    * Handles cross-boundary clears when shift is not aligned to 32-bit boundaries
@@ -136,6 +148,7 @@ class BitVec {
       this.data[shift_5 + 1] &= ~high;
     }
   }
+
   /**
    * Checks if this BitVec is equal to another BitVec
    * @param {BitVec} other - The BitVec to compare with
@@ -148,12 +161,14 @@ class BitVec {
     }
     return true;
   }
+
   /**
    * Sets all bits to zero
    */
   setZero() {
     this.data.fill(0);
   }
+
   /**
    * Checks if all bits are zero
    * @returns {boolean} True if all bits are zero, false otherwise
@@ -164,6 +179,7 @@ class BitVec {
     }
     return true;
   }
+
   /**
    * Checks if all bits set in this BitVec are also set in the given array
    * @param {Int32Array|Array} arr - The array to check against
@@ -177,6 +193,7 @@ class BitVec {
     }
     return true;
   }
+
   /**
    * Checks if all bits set in this BitVec are clear in the given array
    * @param {Int32Array|Array} arr - The array to check against
@@ -190,6 +207,7 @@ class BitVec {
     }
     return true;
   }
+
   /**
    * Checks if this BitVec has any bits in common with another BitVec
    * @param {BitVec} other - The BitVec to check against
@@ -203,6 +221,7 @@ class BitVec {
     }
     return false;
   }
+
   /**
    * Returns a human-readable string representation of the bit vector
    * Each 32-bit segment is printed as a binary string separated by spaces
