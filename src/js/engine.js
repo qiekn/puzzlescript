@@ -1320,7 +1320,6 @@ function generate_calculateRowColMasks(OBJECT_SIZE, MOVEMENT_SIZE) {
 }
 
 function startMovement(dir) {
-  let movedany = false;
   let playerPositions = getPlayerPositions();
   for (let i = 0; i < playerPositions.length; i++) {
     let playerPosIndex = playerPositions[i];
@@ -1329,14 +1328,15 @@ function startMovement(dir) {
   return playerPositions;
 }
 
+// prettier-ignore
 let dirMasksDelta = {
-  1: [0, -1], //up
-  2: [0, 1], //'down'  :
-  4: [-1, 0], //'left'  :
-  8: [1, 0], //'right' :
-  15: [0, 0], //'?' :
-  16: [0, 0], //'action' :
-  3: [0, 0], //'no'
+  1 : [0, -1],  // up
+  2 : [0,  1],  // down
+  4 : [-1, 0],  // left
+  8 : [1,  0],  // right
+  15: [0,  0],  // ?
+  16: [0,  0],  // action
+  3 : [0,  0],  // no
 };
 
 let dirMaskName = {
@@ -3324,7 +3324,8 @@ function checkWin(dontDoWin) {
       : (c) => !filter2.bitsClearInArray(c);
 
     switch (wincondition[0]) {
-      case -1: { //NO
+      case -1: {
+        //NO
         for (let i = 0; i < level.n_tiles; i++) {
           let cell = level.getCellInto(i, _o10);
           if (f1(cell.data) && f2(cell.data)) {
@@ -3335,7 +3336,8 @@ function checkWin(dontDoWin) {
 
         break;
       }
-      case 0: { //SOME
+      case 0: {
+        //SOME
         let passedTest = false;
         for (let i = 0; i < level.n_tiles; i++) {
           let cell = level.getCellInto(i, _o10);
@@ -3349,7 +3351,8 @@ function checkWin(dontDoWin) {
         }
         break;
       }
-      case 1: { //ALL
+      case 1: {
+        //ALL
         for (let i = 0; i < level.n_tiles; i++) {
           let cell = level.getCellInto(i, _o10);
           if (f1(cell.data) && !f2(cell.data)) {
